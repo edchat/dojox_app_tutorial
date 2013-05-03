@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>YOUR TUTORIAL - The Dojo Toolkit</title>
+		
+		
+		<!-- This will all be replaced on the live site -->
+		<link rel="stylesheet" href="http://dojotoolkit.org/css/site.css" type="text/css" media="all" />
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.7/resources/style/style.css" media="screen">
+		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCoreDefault.css" rel="stylesheet" type="text/css" />
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCss.js" type="text/javascript"></script>
+		<!-- Don't add anything here. This will be replaced on the live site. -->
+		<script>
+			dojo.ready(function(){
+				SyntaxHighlighter.all();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<div id="page" class="docPage">
+			<div id="header">
+    			<div class="container">
+        			<span id="logo"><a href="http://dojotoolkit.org" title="Homepage"><img src="http://dojotoolkit.org/images/logo.png" alt="Dojo Toolkit" /></a></span>
+    			</div>
+			</div>
+			<div id="main">
+				<div id="content" class="innerBox">
+					<div class="pageTitleContainer">
+						<h1>Documentation</h1>
+						<ul class="subnav">
+							<li><a href="http://dojotoolkit.org/documentation/"><span>Tutorials</span></a></li>
+							<li><a href="http://dojotoolkit.org/reference-guide/"><span>Reference Guide</span></a></li>
+							<li><a href="http://dojotoolkit.org/api/"><span>API Documentation</span></a></li>
+						</ul>
+					</div>
+					<div style="clear:left;" >
+						<div class="container" style="margin-bottom:50px; width:960px">
+							<div class="unit size2of3 firstUnit">
+								<!-- BEGIN YOUR TUTORIAL HERE -->
+								<div class="tutIntro">
+									<img src="images/preview.jpg" class="tut_preview" /><!-- Feel free to use youw own 200x200 image. Must be royalty free or similar license -->
+									<div class="introContainer">
+										<h2>Your Tutorial Title</h2>
+										<p class="summary">Required. This is the teaser about what the user is going to learn in this tutorial. This summary is automatically pulled into the Dojo Toolkit documentation page index.</p>
+										<ul>
+											<li><span>Difficulty:</span> Beginner <!-- Beginner/Intermediate/Expert --></li>
+											<li><span>Dojo Version:</span> 1.6 <!-- The _single_ version of dojo this is being written for. --></li>
+										</ul>
+									</div>
+								</div>
+								<h3>Getting Started</h3>
+								<p>Give some background here explaining why what the user is going to learn is important. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia. <strong>Below is an example code sample.</strong></p>
+<!-- Only set html-script to true if you actually have HTML and JS mixed. Also you must indent this way or else things get really whacky. -->
+<pre class="brush: js; html-script: true;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;utf-8&quot;&gt;
+	&lt;title&gt;Tutorial: Hello Dojo!&lt;/title&gt;
+	&lt;!-- load Dojo --&gt;
+	&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h1 id=&quot;greeting&quot;&gt;Hello&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+								<p>Code samples are great but we want to show them that the code example actually works, so that's where the view demo button comes in. Note, it's ok to have a few code samples strung together that lead up to a single demo.</p>
+								<a class="demoBtn demo" href="demo/demo.html">View Demo</a>
+
+								<p>Explain to the user what the above code does when run and why it does it. While your demo should be well documented it's nice to be able to read the author's view of what the demo does. For example, this code sample has this description after it:</p>
+								<p>This is as vanilla as it gets. We've put the Dojo script tag into the <code>&lt;head&gt;</code> — it could also have gone at the end of the <code>&lt;body&gt;</code> — with a src attribute indicating the URL where the dojo.js file is located.</p>
+								<p>For this tutorial we are going to load the Dojo Toolkit via the Google CDN. If you have downloaded a Dojo release, adjust the URL to point to the location of dojo.js on your own server. Assuming the URL is correct, Dojo is now loaded quietly in the background. Next we need somewhere to put code that runs when Dojo is ready, so we can do something with it.</p>
+								<div class="proTip">
+									Use this class for asides and other callouts.
+								</div>
+								<h3>Section Heading</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia.</p>
+								
+<pre class="brush: js; html-script: true;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;utf-8&quot;&gt;
+	&lt;title&gt;Tutorial: Hello Dojo!&lt;/title&gt;
+	&lt;!-- load Dojo --&gt;
+	&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js&quot;&gt;&lt;/script&gt;
+	&lt;script&gt;
+		dojo.ready(function(){
+			alert(&quot;Dojo version &quot; + dojo.version + &quot; is loaded&quot;);
+		});
+	&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h1 id=&quot;greeting&quot;&gt;Hello&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+							<a class="demoBtn demo" href="demo/demo.html">View Demo</a>
+
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia.</p>
+
+<pre class="brush: js; html-script: true; highlight: [10]">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;utf-8&quot;&gt;
+	&lt;title&gt;Tutorial: Hello Dojo!&lt;/title&gt;
+	&lt;!-- load Dojo --&gt;
+	&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js&quot;&gt;&lt;/script&gt;
+	&lt;script&gt;
+		dojo.ready(function(){
+			dojo.byId(&quot;greeting&quot;).innerHTML += &quot;, from &quot; + dojo.version;
+		});
+	&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h1 id=&quot;greeting&quot;&gt;Hello&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+							<a class="demoBtn demo" href="demo/demo.html">View Demo</a>
+
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia.</p>
+
+<pre class="brush: js; html-script: false;">function init() {
+	alert(&quot;Dojo ready, version:&quot; + dojo.version);
+	// More initialization here
+}
+dojo.ready(init);
+</pre>
+
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod.</p>
+
+							<h3>Section Heading</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia.</p>
+
+							<h3>Conclusion</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam iaculis condimentum lectus ac gravida. Nullam vulputate mauris sed augue dictum sed scelerisque nulla scelerisque. Sed lectus leo, auctor quis placerat nec, consectetur id est. Maecenas rhoncus magna non eros blandit euismod. Aliquam leo augue, sollicitudin nec mollis posuere, egestas vel sem. Nam accumsan posuere metus ut lacinia.</p>
+						</div>
+						<div class="sidebar unit size1of3">
+							<div class="container">
+								<div class="sidebarSection">
+									<h4>About the Author</h4>
+									<div class="authorInfo">
+										<img src="images/avatar.jpg" class="avatar" />
+										<p>
+											Torrey Rice is a Dojo committer and Creative Director at <a href="http://www.sitepen.com">SitePen, Inc.</a>
+											<!-- Your avatar should be 100x100. Keep your bio to a couple of lines and provide a link to your website -->
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br style="clear:both;" />
+		<div id="main">
+			<div id="content" class="innerBox">
+				<div id="foot">
+					<div class="innerBox">
+						<span class="redundant">&copy;</span> <a href="http://dojofoundation.org">The Dojo Foundation</a>, All Rights Reserved.&nbsp;&nbsp;&nbsp;<a href="http://dojotoolkit.org/license/">License Information</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
