@@ -2,34 +2,27 @@
 	"id": "contactsApp",
 	"loaderConfig": {
 		"paths": {
-			"contactsApp": "../demo"
+			"contactsApp": "../demo1"
 		}
 	},
 	"dependencies": [
 			"dojo/store/Observable",
 			"dojox/mobile/Heading",
 			"dojox/mobile/ScrollableView",
-			"dojox/mobile/ToolBarButton"
-	],
-	"modules": [
+			"dojox/mobile/ToolBarButton",
+			"dojo/store/Memory"
 	],
 	"controllers": [
 		"dojox/app/controllers/Load",
 		"dojox/app/controllers/Transition",
-		"dojox/app/controllers/Layout"
+		"dojox/app/controllers/Layout",
+		"dojox/app/controllers/History"
 	],
-	"nls": "demo/nls/contacts",
-	"defaultTransition": "slide",
+	"nls": "demo1/nls/contacts",
 	"defaultView": "list",
 	"stores": {
 		"contacts": {
 			"type": "dojo/store/Memory",
-			"has": {
-				"cordova": {
-					"type": "dcordova/ContactsStore",
-					"params": { "displayName": true }
-				}
-			},
 			"observable": true,
 			"params": {
 				"data": [
@@ -93,41 +86,8 @@
 	},
 	"views": {
 		"list": {
-			"controller": "demo/list",
-			"template": "demo/list.html",
-			"nls": "demo/nls/list",
-			"has": {
-				"!phone": {
-					"constraint": "left"
-				}
-			}
-		},
-		"detail": {
-			"controller": "demo/detail",
-			"template": "demo/detail.html",
-			"nls": "demo/nls/detail"
-		}
-	},
-	"has": {
-		"html5history": {
-			"controllers": [
-				"dojox/app/controllers/History"
-			]
-		},
-		"!html5history": {
-			"controllers": [
-				"dojox/app/controllers/HistoryHash"
-			]
-		},
-		"!cordova": {
-			"dependencies": [
-				"dojo/store/Memory"
-			]
-		},
-		"cordova": {
-			"dependencies": [
-				"dcordova/ContactsStore"
-			]
+			"controller": "demo1/list",
+			"template": "demo1/list.html"
 		}
 	}
 }

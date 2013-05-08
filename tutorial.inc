@@ -11,79 +11,43 @@
 	<li>A build system to bundle your application in a limited set of files to be downloaded or installed onto the system</li>
 </ul>
 
-<p>Even if built on top of Dojo, dojox/app is UI Toolkit agnostic, and the application views can be developed with:</p>
+<p>Even though dojox/app is built on top of Dojo, it is UI Toolkit agnostic.  The application views can be developed with:</p>
 <ul>
 	<li>Dijit</li>
 	<li>Dojo Mobile</li>
 	<li>Any other JavaScript/HTML5 toolkit like jQuery Mobile</li>
 </ul>
 
-<h3 id="jsonConfig">What the JSON Configuration Contains</h3>
-<ul>
-	<li>An application ID</li>
-	<li>A set of application controllers</li>
-	<li>A set of application dependencies</li>
-	<li>A set of views with:</li>
-		<ul>
-			<li>Templates (View rendering)</li>
-			<li>Controllers (View controllers)</li>
-			<li>View Translation Files</li>
-			<li>Possibly custom parameters</li>
-		</ul>
-	<li>A set of data stores that can be shared at application level or specific to a view</li>
-</ul>
-<p class="proTip">The configuration can leverage the dojo/has module to branch based on the targeted platform.</p>
-
-<p>Here is a small sample JSON configuration:</p>
-
-<pre class="brush: js;">
-{
-  "id": "myApp",
-  "controllers": [
-    "dojox/app/controllers/Transition",
-    "dojox/app/controllers/History"
-  ],
- "stores": {
-    "myStore": {
-       "type": "myApp/MyStore"
-     }
-  }
-  "views": {
-    "list": {
-         "template": "myApp/list.html",
-          "nls": "myApp/nls/list"
-     },
-     "detail": {
-          "controller" : "myApp/detail",
-          "template":  "myApp/list",
-          "nls": "myApp/nls/detail"
-    }
-}</pre>
-
 <h3 id="createAnApp">Creating a Contacts Application</h3>
 
-<p> The aim is to create a simple <strong>Contacts application</strong> based on <strong>Dojo Mobile & Application Framework 1.9</strong> with support to:</p>
+<p>The aim is to create a simple <strong>Contacts application</strong> based on <strong>Dojo 1.9 Mobile & Application Framework</strong> with support to:</p>
 <ul>
 	<li><strong>List, search & display</strong> your contacts</li>
 	<li><strong>Edit or Delete</strong> an existing contact</li>
 	<li><strong>Add</strong> a new contact</li>
 </ul>
-<p> The <strong>Contacts application</strong> will include two views.  The first view will include a <strong>list of contacts</strong>, and the second view will show the <strong>details of a contact</strong> and allow the contact to be edited or deleted.</p>
-<div style="float: left; width: 100%; margin-top: 20px;">
-	<p> This is how the <strong>Contacts application</strong> will look on an <strong>iPhone</strong>.</p>
-	<div style="float: left; width: 50%;">
-		<label  style="margin-left: 90px;">Contacts List on iPhone</label>
-		<img src="images/phoneImage1.png" alt="Phone Contacts List View" style="margin:0 auto;display:block;" />
-	</div>
-	<div style="float: left; width: 50%;">
-		<label style="margin-left: 90px;">Contacts Details on iPhone </label>
-		<img src="images/phoneImage.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
-	</div>
-</div>
+
+<p>To get started we will see how <strong>Contacts application data</strong> will be structured.
+	The data will include an array of contacts with the following:</p>
+<ul>
+	<li><strong>"id"</strong>: a unique id.</li>
+	<li><strong>"name"</strong>: which includes sub-fields of <strong>"givenName"</strong> and <strong>"familyName"</strong>.</li>
+	<li><strong>"displayName"</strong>: which is created by joining the <strong>"givenName"</strong> and <strong>"familyName"</strong>.</li>
+	<li><strong>"emails"</strong>: an array which contains entries which include sub-fields of <strong>"type"</strong> and <strong>"value"</strong>.</li>
+	<li><strong>"phoneNumbers"</strong>: an array which contains entries which include sub-fields of <strong>"type"</strong> and <strong>"value"</strong>.</li>
+</ul>
+
+<p>Eventually the <strong>Contacts application</strong> will include two views.
+	The first view will include a <strong>list of contacts</strong>, and the second view will show
+	the <strong>details of a contact</strong> and allow the contact to be edited or deleted.</p>
+
+<h3 id="FirstList">First we will create the application with only the <strong>list</strong> view.</h3>
 <div style="float: left; width: 100%; margin-top: 20px; margin-bottom: 20px;">
-		<p>This is how the <strong>Contacts application</strong> will look on an <strong>iPad</strong>.</p>
-		<label style="margin-left: 90px;">Contacts List and Details on iPad</label>
-		<img src="images/tabletImage.png" alt="Tablet/Desktop Layout" style="margin:0 auto;display:block;width: 540px;height: 396px;" />
+	<p>This is how the <strong>Contacts application list</strong> view will look on an <strong>iPhone</strong> iOS Simulator.</p>
+	<div style="float: left; width: 50%;">
+		<label  style="margin-left: 90px;">Contacts List</label>
+		<img src="images/demo1List.png" alt="Phone Contacts List View" style="margin:0 auto;display:block;" />
+	</div>
 </div>
 
 <h3 id="createhtml">Create the main HTML file for your application.</h3>
@@ -102,11 +66,6 @@
  &lt;/script&gt;
 </pre>
 
-<p>Your application CSS file:</p>
-<pre class="brush: js; html-script: true;">
-&lt;link rel="stylesheet" href="contacts.css"&gt;
-</pre>
-
 <p>As well as your main application (AMD) module:</p>
 <pre class="brush: js; html-script: true;">
 &lt;script type="text/javascript"&gt;
@@ -114,30 +73,217 @@
  &lt;/script&gt;
 </pre>
 
-<h3 id="createconfig1">Create the configuration file, contacts.json.</h3>
+<h3 id="jsonConfig">Create the JSON configuration file.</h3>
+<p>What the JSON Configuration Contains:</p>
+<ul>
+	<li>An application ID</li>
+	<li>A set of application controllers</li>
+	<li>A set of application dependencies</li>
+	<li>A set of views with:</li>
+		<ul>
+			<li>Templates (View rendering)</li>
+			<li>Controllers (View controllers)</li>
+			<li>View Translation Files</li>
+			<li>Possibly custom parameters</li>
+		</ul>
+	<li>A set of data stores that can be shared at application level or specific to a view</li>
+</ul>
+<p class="proTip">The configuration can leverage the dojo/has module to branch based on the targeted platform.</p>
 
-<p>It can be pretty minimal at first, just the controllers, the stores, no views:</p>
+<h3 id="createconfig1">Create the JSON configuration file for the <strong>Contacts application</strong> (contacts.json).</h3>
+
+<p>The JSON configuration for the List view Contacts Application includes the dependencies, controllers, the stores, nls,
+	defaultView and the list view, as follows:</p>
 <pre class="brush: js; html-script: true;">
-	"id": "contactsApp",
+	{
+		"id": "contactsApp",
+		"loaderConfig": {
+			"paths": {
+				"contactsApp": "../demo1"
+			}
+		},
 		"dependencies": [
-		  "dojo/store/Memory",
+				"dojo/store/Observable",
+				"dojox/mobile/Heading",
+				"dojox/mobile/ScrollableView",
+				"dojox/mobile/ToolBarButton",
+				"dojo/store/Memory"
 		],
 		"controllers": [
-		  "dojox/app/controllers/Load",
-		  "dojox/app/controllers/Transition",
-		  "dojox/app/controllers/Layout",
-		  "dojox/app/controllers/History"
+			"dojox/app/controllers/Load",
+			"dojox/app/controllers/Transition",
+			"dojox/app/controllers/Layout",
+			"dojox/app/controllers/History"
 		],
+		"nls": "demo1/nls/contacts",
+		"defaultView": "list",
 		"stores": {
-		  "contacts": {
-		    "type": "dojo/store/Memory",  
-			"has": {" cordova" : { "type" : "dcordova/ContactsStore" } }, 
-			"observable": true
-	    }
-	  }
+			"contacts": {
+				"type": "dojo/store/Memory",
+				"observable": true,
+				"params": {
+					"data": [
+						{
+							"id": "1",
+							"displayName": "Ed Chatelain",
+							"name": {
+								"givenName": "Ed",
+								"familyName": "Chatelain"
+							},
+							"emails": [
+								{
+									"type": "home",
+									"value": "me@myhome.com"
+								}
+							],
+							"phoneNumbers": [
+								{
+									"type": "home",
+									"value": "10-20-30-40"
+								},
+								{
+									"type": "work",
+									"value": "11-22-33-44"
+								}
+							],
+							"organizations": []
+						},
+						{
+							"id": "2",
+							"displayName": "Christophe Jolif",
+							"name": {
+								"givenName": "Christophe",
+								"familyName": "Jolif"
+							},
+							"emails": [
+								{
+									"type": "home",
+									"value": "him@myhome.com"
+								},
+								{
+									"type": "work",
+									"value": "dev@dev.com"
+								}
+							],
+							"phoneNumbers": [
+								{
+									"type": "home",
+									"value": "11-43-81-63-19"
+								},
+								{
+									"type": "work",
+									"value": "11-48-07-13-38"
+								}
+							],
+							"organizations": []
+						}
+					]
+				}
+			}
+		},
+		"views": {
+			"list": {
+				"controller": "demo1/list",
+				"template": "demo1/list.html",
+				"nls": "demo1/nls/list"
+			}
+		}
+	}
 </pre>
 
-<p>Add views definition, layout & possible transitions to the JSON:</p>
+<h3 id="createmain">Create the main module for your application.</h3>
+<p>The main module will define the configuration flags needed by the configuration file and load the configuration file
+	to instantiate the application (contacts.js)</p>
+<pre class="brush: js; html-script: true;">
+	define(["dojo/json", "dojo/text!demo1/contacts.json", "dojox/app/main",
+			"dojox/mobile/common"],
+		function(json, config, Application, common){
+			Application(json.parse(config));
+	});
+</pre>
+
+<h3 id="createviews">Create the <strong>"list"</strong> view, including template, and controller.</h3>
+<p><strong>"list"</strong> view template</p>
+<pre class="brush: html;">
+	&lt;div class="mblBackground"&gt;
+		&lt;div data-dojo-type="dojox/mobile/Heading"
+				data-dojo-props="fixed: 'top'"&gt;
+			${nls.contacts}
+		&lt;/div&gt;
+		&lt;div data-dojo-type="dojox/mobile/EdgeToEdgeStoreList"
+				 data-dojo-attach-point="contacts"
+				 data-dojo-props="store: this.loadedStores.contacts,
+								labelProperty: 'displayName'"&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+</pre>
+
+<p>The <strong>"list"</strong> view controller's <strong>init</strong> function will simply use <strong>on</strong> to
+	watch for clicks in the list, and use console.log to indicate which item was clicked.</p>
+<pre class="brush: js; html-script: true;">
+	define(["dojox/mobile/EdgeToEdgeStoreList"],
+		function(){
+		return {
+			init: function(){
+				this.contacts.on("click", function(e){
+					console.log(e.target.innerHTML + ": was clicked.");
+				});
+			}
+		};
+	});
+</pre>
+
+<a class="demoBtn demo" href="demo1/contacts.php" target="_blank">View Demo1: List View</a>
+
+<h3 id="demo2AddDetails">Next we will add the <strong>detail view</strong> to the Contacts Application</h3>
+
+<p>The <strong>Contacts application</strong> will include two views.  The first view will include a <strong>list of contacts</strong>, and the second view will show the <strong>details of a contact</strong> and allow the contact to be edited or deleted.</p>
+<div style="float: left; width: 100%; margin-top: 20px;">
+	<p>This is how the <strong>Contacts application</strong> will look on an <strong>iPhone</strong> iOS Simulator.</p>
+	<div style="float: left; width: 50%;">
+		<label  style="margin-left: 90px;">Contacts List</label>
+		<img src="images/phoneImage1.png" alt="Phone Contacts List View" style="margin:0 auto;display:block;" />
+	</div>
+	<div style="float: left; width: 50%;">
+		<label style="margin-left: 90px;">Contacts Details</label>
+		<img src="images/phoneImage.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
+	</div>
+</div>
+<div style="float: left; width: 100%; margin-top: 20px; margin-bottom: 20px;">
+		<p>This is how the <strong>Contacts application</strong> will look on an <strong>iPad</strong> iOS Simulator.</p>
+		<label style="margin-left: 90px;">Contacts List and Details</label>
+		<img src="images/tabletImage.png" alt="Tablet/Desktop Layout" style="margin:0 auto;display:block;width: 540px;height: 396px;" />
+</div>
+
+
+<p>We need to add the application CSS file to the html:</p>
+<pre class="brush: js; html-script: true;">
+&lt;link rel="stylesheet" href="contacts.css"&gt;
+</pre>
+
+
+<p>The <strong>contacts.css</strong> application CSS file looks like this:</p>
+<pre class="brush: js; html-script: true;">
+	@media screen and (min-width: 501px) {
+	  	.leftpanel {
+	    	width: 250px;
+			border-right:1px solid black;
+			z-index:100;
+		}
+		.backButton {
+			display: none;
+		}
+	}
+
+	.hidden {
+		display: none;
+	}
+</pre>
+
+
+
+<p>The JSON configuration file <strong>contacts.json</strong> has to be updated to add the <strong>detail</strong> view controller, template and nls settings to the JSON file, and update the
+	<strong>list</strong> view.</p>
 <pre class="brush: js; html-script: true;">
 	"views": {
 	  "list": {
@@ -157,48 +303,311 @@
 	}
 </pre>
 
-<p>Add initial view declaration:</p>
+<h3 id="updatemain">Update the main module of your application.</h3>
+<p>The main module (contacts.js) will be updated to  to add the has check for <strong>phone and html5history</strong>.</p>
 <pre class="brush: js; html-script: true;">
-	"defaultView": "list",
-</pre>
+	// we use 'define' and not 'require' to workaround Dojo build system limitation that prevents from making of this file
+	// a layer if it using 'require'
+	define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!demo/contacts.json", "dojox/app/main", "dojox/mobile/common"],
+		function(has, request, json, config, Application, common){
 
-<h3 id="createmain">Create the main module for your application.</h3>
-<p>The main module will define the configuration flags needed by the configuration file and load the configuration file to instantiate the application</p>
-<pre class="brush: js; html-script: true;">
-	define(["dojox/app/main", "dojo/sniff", "dojo/json",        
-			"dojo/text!./contacts.json“],    
-	function(Application, has, json, config, common){
-	   has.add("phone", (window.innerWidth <= 500));
-	   Application(json.parse(config));
+		// if we exclude the cordova trick the init could be as simple as:
+		// has.add("html5history", !has("ie") || has("ie") > 9);
+		// has.add("phone", ((window.innerWidth || document.documentElement.clientWidth) <= common.tabletSize));
+		// Application(json.parse(config));
+
+		// trick to know if cordova optional project is here or not
+		var init = function(){
+			// populate has flag on whether html5 history is correctly supported or not
+			has.add("html5history", !has("ie") || has("ie") > 9);
+			has.add("phone", ((window.innerWidth || document.documentElement.clientWidth) <= common.tabletSize));
+			Application(json.parse(config));
+		};
+		// check if cordova project's here
+		request("../dcordova/sniff.js").then(function(){
+			// cordova project is here, sniff cordova features and load the app
+			require(["dcordova/sniff"], function(){
+				init();
+			});
+		}, function(){
+			// cordova project is not here, directly load the app
+			init();
+		});
 	});
 </pre>
 
-<h3 id="createviews">Create the views, including their templates, controllers, and nls translation files.</h3>
-<p><strong>"list"</strong> view template</p>
-<pre class="brush: html;">
-	&lt;div class="leftpanel mblBackground"&gt;
-		&lt;script type="dojo/require"&gt;
-			has: "dojo/has"
-		&lt;/script&gt;
-		&lt;div data-dojo-type="dojox/mobile/Heading"
-				data-dojo-props="fixed: 'top'"&gt;
-			${nls.contacts}
-			&lt;button data-dojo-type="dojox/mobile/ToolBarButton"
-					style="position: absolute; right: 0"
-					data-dojo-props="target: 'detail',
-								transitionOptions: { params: { edit: true } }"
-					data-dojo-attach-point="add"&gt;${nls.add}&lt;/button&gt;
-		&lt;/div&gt;
-		&lt;div data-dojo-type="dojox/mobile/EdgeToEdgeStoreList"
-				data-dojo-mixins="dojox/mobile/FilteredListMixin"
-				data-dojo-attach-point="contacts"
-				data-dojo-props="store: this.loadedStores.contacts,
-					labelProperty: 'displayName',
-					itemRenderer: this.ContactListItem,
-							placeHolder: '${nls.search}',
-							stateful: !has('phone')"&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;</pre>
+
+<p>The updated <strong>"list"</strong> view controller returns a specific ListItem subclass that deals in particular
+	with handling the selection to transition to the detail view and with multi-channel (hiding the arrow on tablets).
+	The <strong>init</strong> function which is called when the controller is loaded the first time handles selecting
+	the new item when one is added to the list. And the <strong>beforeActivate</strong> function which is called
+	before the view is activated each time it is shown handles the tablet case where the first item needs to be selected
+	by default.</p>
+<pre class="brush: js; html-script: true;">
+	define(["dojo/_base/declare", "dojo/_base/array", "dojo/has", "dojox/mobile/ListItem",
+		"dojox/mobile/EdgeToEdgeStoreList", "dojox/mobile/FilteredListMixin"],
+		function(declare, array, has, ListItem){
+		var ContactListItem = declare(ListItem, {
+			target: "detail",
+			clickable: true,
+			// we don't get an arrow if we are on a two panes layout (tablet)
+			noArrow: !has("phone"),
+			postMixInProperties: function(){
+				this.inherited(arguments);
+				this.transitionOptions = {
+					params: {
+						"id" : this.id
+					}
+				}
+			}
+		});
+
+		return {
+			ContactListItem: ContactListItem,
+			init: function(){
+				var view = this;
+				this.contacts.on("add", function(item){
+					// select the newly added element
+					if(!has("phone")){
+						array.some(view.contacts.getChildren(), function(child){
+							if(child.id == item.id){
+								view.contacts.selectItem(child);
+							}
+							return false;
+						});
+					}
+				});
+				this.add.on("click", function(){
+					view.contacts.deselectAll();
+				});
+			},
+			beforeActivate: function(){
+				// in tablet we want one to be selected at init
+				if(!has("phone")){
+					// check if something is selected
+					var selected = array.some(this.contacts.getChildren(), function(child){
+						return child.get("selected");
+					});
+					if(!selected){
+						var item = this.contacts.getChildren()[0];
+						this.contacts.selectItem(item);
+						// transition
+						this.app.transitionToView(this.domNode, {
+							target: "detail",
+							params: {
+								id: item.id
+							}
+						});
+					}
+				}
+			}
+		};
+	});
+</pre>
+
+
+<p>The <strong>"detail"</strong> view controller is in charge of both adjusting the display based on the channel as well as
+	binding the data from the configuration store to the form, for it is using the loadedStores property:</p>
+<pre class="brush: js; html-script: true;">
+	define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
+		"dojo/Deferred", "dojo/query", "dojo/dom-class","dijit/registry",
+		"dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
+		function(array, lang, has, when, Deferred, query, domClass, registry){
+
+		var DATA_MAPPING = {
+			"phonehome": "phoneNumbers.home",
+			"phonework": "phoneNumbers.work",
+			"mailhome": "emails.home",
+			"mailwork": "emails.work"
+		};
+
+		var getStoreField = function(arr, type){
+			var index = array.indexOf(arr, function(item){
+				return (item.type == type);
+			});
+			if(index == -1){
+				// create one
+				arr.push({
+					type: type
+				});
+				index = arr.length - 1;
+			}
+			return arr[index];
+		};
+
+		return {
+			beforeActivate: function(){
+				// in case we are still under saving previous modifications, let's wait for
+				// the operation to be completed as use resulting contact as input
+				var view = this;
+				when(view._savePromise, function(contact){
+					view._savePromise = null;
+					view._beforeActivate(contact);
+				});
+			},
+			_beforeActivate: function(contact){
+				// get the id of the displayed contact from the params if we don't have a contact
+				// or from the contact if we have one
+				if(contact){
+					this.params.id = contact.id;
+				}
+				var id = this.params.id;
+
+				// are we in edit mode or not? if we are we need to slightly update the view for that
+				var edit = this.params.edit;
+				// are we in create mode
+				var create = (typeof id === "undefined");
+				// change widgets readonly value based on that
+				query("input", this.domNode).forEach(function(node){
+					registry.byNode(node).set("readOnly", !edit);
+				});
+				// in edit mode change the label and params of the edit button
+				this.editButton.set("label", edit?this.nls.ok:this.nls.edit);
+				// put a listener to save the form when we are editing if there is no
+				if(!this._onHandler && edit){
+					this._onHandler = this.editButton.on("click", lang.hitch(this, this._saveForm));
+				}else if(this._onHandler && !edit){
+					this._onHandler.remove();
+					this._onHandler = null;
+				}
+				var editButtonOptions = this.editButton.transitionOptions;
+				editButtonOptions.params.edit = !edit;
+				// also update the edit & ok button to reference the currently displayed item
+				editButtonOptions.params.id = id;
+				var cancelButtonOptions = this.cancelButton.transitionOptions;
+				if(create){
+					// if we cancel we want to go back to main view
+					cancelButtonOptions.target = "list";
+					if(cancelButtonOptions.params.id){
+						delete cancelButtonOptions.params.id;
+					}
+				}else{
+					cancelButtonOptions.target = "detail";
+					cancelButtonOptions.params.id = id;
+				}
+				// hide back button in edit mode
+				if(edit){
+					domClass.add(this.backButton.domNode, "hidden");
+				}else{
+					domClass.remove(this.backButton.domNode, "hidden");
+				}
+				// cancel button must be shown in edit mode only,
+				// same for delete button if we are not creating a new contact
+				this.cancelButton.domNode.style.display = edit?"":"none";
+				this.deleteButton.domNode.style.display = (edit&&(typeof id !== "undefined"))?"":"none";
+
+				// let's fill the form with the currently selected contact
+				// if nothing selected skip that part
+				var view = this;
+				var promise = null;
+				if(!create && !contact){
+					id = id.toString();
+					// get the contact on the store
+					promise = this.loadedStores.contacts.get(id);
+				}else{
+					promise = contact;
+				}
+				when(promise, function(contact){
+					view.firstname.set("value", contact ? contact.name.givenName : null);
+					view.lastname.set("value", contact ? contact.name.familyName : null);
+					if(contact && contact.organizations && contact.organizations.length){
+						view.company.set("value", contact.organizations[0].name);
+					}else{
+						view.company.set("value", null);
+					}
+					// reset binding fields
+					for(var key in DATA_MAPPING){
+						view[key].set("value", null);
+					}
+					if(contact){
+						// set each phone number to the corresponding form field
+						array.forEach(contact.phoneNumbers, function(number){
+							// TODO deal with case where we don't support a particular field
+							view["phone"+number.type].set("value",  number.value);
+						});
+						// set each mail field to the corresponding form field
+						array.forEach(contact.emails, function(mail){
+							// TODO deal with case where we don't support a particular field
+							view["mail"+mail.type].set("value",  mail.value);
+						});
+					}
+				});
+			},
+			_saveForm: function(){
+				var id = this.params.id, view = this;
+				view._savePromise = new Deferred();
+				if(typeof id === "undefined"){
+					view._createContact();
+				}else{
+					// get the contact on the store
+					var promise = this.loadedStores.contacts.get(id.toString());
+					when(promise, function(contact){
+						view._saveContact(contact);
+						// save the updated item into the store
+						when(view.loadedStores.contacts.put(contact), function(contact){
+							view._savePromise.resolve(contact);
+						});
+					});
+				}
+			},
+			_createContact: function(){
+				var contact = {
+					"id": (Math.round(Math.random()*1000000)).toString(),
+					"name": {},
+					"displayName": "",
+					"phoneNumbers": [],
+					"emails": [],
+					"organizations": []
+				};
+				var view = this;
+				this._saveContact(contact);
+				when(this.loadedStores.contacts.add(contact), function(contact){
+					view._savePromise.resolve(contact);
+				});
+			},
+			_saveContact: function(contact){
+				// set back the values on the contact object
+				var value, keys;
+				// deal with name first
+				var displayName = "";
+				value = this.firstname.get("value");
+				if(typeof value !== "undefined"){
+					contact.name.givenName = value;
+					displayName += value;
+				}
+				value = this.lastname.get("value");
+				if(typeof value !== "undefined"){
+					contact.name.familyName = value;
+					displayName += " " + value;
+				}
+				contact.displayName = displayName;
+				value = this.company.get("value");
+				if(typeof value !== "undefined"){
+					if(contact.organizations.length == 0){
+						contact.organizations.push({});
+					}
+					contact.organizations[0].name = value;
+				}
+				for(var key in DATA_MAPPING){
+					value = this[key].get("value");
+					if(typeof value !== "undefined"){
+						// there is a value, save it
+						keys = DATA_MAPPING[key].split(".");
+						getStoreField(contact[keys[0]], keys[1]).value = value;
+					}
+					// TODO remove existing value?
+				}
+			},
+			_deleteContact: function(){
+				this.loadedStores.contacts.remove(this.params.id.toString());
+				// we want to be back to list
+				this.app.transitionToView(this.domNode, { target: "list" });
+			}
+		}
+	});
+</pre>
+
+
 
 <p><strong>"detail"</strong> view template</p>
 <pre class="brush: html;">
@@ -294,263 +703,11 @@
 	&lt;/div&gt;
 </pre>
 
-<p><strong>"CSS"</strong> file that will provide the CSS for the views:</p>
-<pre class="brush: css;">
-	@media screen and (min-width: 501px) {
-		.leftpanel {
-			width: 250px;
-			border-right:1px solid black;
-			z-index:100;
-		}
-		.backButton {
-			display: none;
-		}
-	}
 
-	.create {
-		display: none;
-	}
-</pre>
 
-<p>The <strong>"list"</strong> view controller returns a specific ListItem subclass that deals in particular with multi-channel (hiding the arrow on tablets).
-	Followed by the <strong>init</strong> function which is called when the controller is loaded the first time
-	and the <strong>beforeActivate</strong> function which is called before the view is activated each time it is shown.</p>
-<pre class="brush: js; html-script: true;">
-	define(["dojo/_base/declare", "dojo/_base/array", "dojo/has", "dojox/mobile/ListItem",
-		"dojox/mobile/EdgeToEdgeStoreList", "dojox/mobile/FilteredListMixin"],
-		function(declare, array, has, ListItem){
-		var ContactListItem = declare(ListItem, {
-			target: "detail",
-			clickable: true,
-			// we don't get an arrow if we are on a two panes layout (tablet)
-			noArrow: !has("phone"),
-			postMixInProperties: function(){
-				this.inherited(arguments);
-				this.transitionOptions = {
-					params: {
-						"id" : this.id
-					}
-				}
-			}
-		});
+<a class="demoBtn demo" href="demo/contacts.php" target="_blank">View Demo</a>
 
-		return {
-			ContactListItem: ContactListItem,
-			init: function(){
-				var view = this;
-				this.contacts.on("add", function(item){
-					// select the newly added element
-					if(!has("phone")){
-						array.some(view.contacts.getChildren(), function(child){
-							if(child.id == item.id){
-								view.contacts.selectItem(child);
-							}
-							return false;
-						});
-					}
-				});
-				this.add.on("click", function(){
-					view.contacts.deselectAll();
-				});
-			},
-			beforeActivate: function(){
-				// in tablet we want one to be selected at init
-				if(!has("phone")){
-					// check if something is selected
-					var selected = array.some(this.contacts.getChildren(), function(child){
-						return child.get("selected");
-					});
-					if(!selected){
-						var item = this.contacts.getChildren()[0];
-						this.contacts.selectItem(item);
-						// transition
-						this.app.transitionToView(this.domNode, {
-							target: "detail",
-							params: {
-								id: item.id
-							}
-						});
-					}
-				}
-			}
-		};
-	});
-</pre>
 
-<p>The <strong>"deatil"</strong> view controller is in charge of both adjusting the display based on the channel as well as
-	binding the data from the configuration store to the form, for it is using the loadedStores property:</p>
-<pre class="brush: js; html-script: true;">
-	define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/query", "dojo/dom-class",
-		"dijit/registry", "dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
-		function(array, lang, has, when, query, domClass, registry){
-
-		var DATA_MAPPING = {
-			"phonehome": "phoneNumbers.home",
-			"phonework": "phoneNumbers.work",
-			"mailhome": "emails.home",
-			"mailwork": "emails.work"
-		};
-
-		var getStoreField = function(arr, type){
-			var index = array.indexOf(arr, function(item){
-				return (item.type == type);
-			});
-			if(index == -1){
-				// create one
-				arr.push({
-					type: type
-				});
-				index = arr.length - 1;
-			}
-			return arr[index];
-		};
-
-		return {
-			beforeActivate: function(previousView){
-				// get the id of the displayed contact from the params
-				var id = this.params.id;
-
-				// are we in edit mode or not? if we are we need to slightly update the view for that
-				var edit = this.params.edit;
-				// change widgets readonly value based on that
-				query("input", this.domNode).forEach(function(node){
-					registry.byNode(node).set("readOnly", !edit);
-				});
-				// in edit mode change the label and params of the edit button
-				this.editButton.set("label", edit?this.nls.ok:this.nls.edit);
-				// put a listener to save the form when we are editing if there is no
-				if(!this._onHandler && edit){
-					this._onHandler = this.editButton.on("click", lang.hitch(this, this._saveForm));
-				}else if(this._onHandler && !edit){
-					this._onHandler.remove();
-					this._onHandler = null;
-				}
-				var editButtonOptions = this.editButton.transitionOptions;
-				editButtonOptions.params.edit = !edit;
-				// also update the edit & ok button to reference the currently displayed item
-				editButtonOptions.params.id = id;
-				var cancelButtonOptions = this.cancelButton.transitionOptions;
-				if(typeof id === "undefined"){
-					// if we cancel we want to go back to main view
-					cancelButtonOptions.target = "list";
-					if(cancelButtonOptions.params.id){
-						delete cancelButtonOptions.params.id;
-					}
-					domClass.add(this.backButton.domNode, "create");
-				}else{
-					cancelButtonOptions.target = "detail";
-					cancelButtonOptions.params.id = id;
-					domClass.remove(this.backButton.domNode, "create");
-				}
-				// cancel button must be shown in edit mode only, same for delete button if we are not creating a new contact
-				this.cancelButton.domNode.style.display = edit?"":"none";
-				this.deleteButton.domNode.style.display = (edit&&(typeof id !== "undefined"))?"":"none";
-
-				// let's fill the form with the currently selected contact
-				// if nothing selected skip that part
-				var view = this;
-				var promise = null;
-				if(typeof id !== "undefined"){
-					id = id.toString();
-					// get the contact on the store
-					promise = this.loadedStores.contacts.get(id);
-				}
-				when(promise, function(contact){
-					view.firstname.set("value", contact ? contact.name.givenName : null);
-					view.lastname.set("value", contact ? contact.name.familyName : null);
-					if(contact && contact.organizations && contact.organizations.length){
-						view.company.set("value", contact.organizations[0].name);
-					}else{
-						view.company.set("value", null);
-					}
-					// reset binding fields
-					for(var key in DATA_MAPPING){
-						view[key].set("value", null);
-					}
-					if(contact){
-						// set each phone number to the corresponding form field
-						array.forEach(contact.phoneNumbers, function(number){
-							// TODO deal with case where we don't support a particular field
-							view["phone"+number.type].set("value",  number.value);
-						});
-						// set each mail field to the corresponding form field
-						array.forEach(contact.emails, function(mail){
-							// TODO deal with case where we don't support a particular field
-							view["mail"+mail.type].set("value",  mail.value);
-						});
-					}
-				});
-			},
-			_saveForm: function(){
-				var id = this.params.id, view = this;
-				if(typeof id === "undefined"){
-					view._createContact();
-				}else{
-					// get the contact on the store
-					var promise = this.loadedStores.contacts.get(id);
-					when(promise, function(contact){
-						view._saveContact(contact);
-						// save the updated item into the store
-						view.loadedStores.contacts.put(contact);
-					});
-				}
-			},
-			_createContact: function(){
-				var contact = {
-					"id": (Math.round(Math.random()*1000000)).toString(),
-					"name": {},
-					"displayName": "",
-					"phoneNumbers": [],
-					"emails": [],
-					"organizations": []
-				};
-				// we created a new id update navigation
-				var editButtonOptions = this.editButton.transitionOptions;
-				editButtonOptions.params.id = contact.id;
-				this._saveContact(contact);
-				this.loadedStores.contacts.add(contact);
-			},
-			_saveContact: function(contact){
-				// set back the values on the contact object
-				var value, keys;
-				// deal with name first
-				var displayName = "";
-				value = this.firstname.get("value");
-				if(typeof value !== "undefined"){
-					contact.name.givenName = value;
-					displayName += value;
-				}
-				value = this.lastname.get("value");
-				if(typeof value !== "undefined"){
-					contact.name.familyName = value;
-					displayName += " " + value;
-				}
-				contact.displayName = displayName;
-				value = this.company.get("value");
-				if(typeof value !== "undefined"){
-					if(contact.organizations.length == 0){
-						contact.organizations.push({});
-					}
-					contact.organizations[0].name = value;
-				}
-				for(var key in DATA_MAPPING){
-					value = this[key].get("value");
-					if(typeof value !== "undefined"){
-						// there is a value, save it
-						keys = DATA_MAPPING[key].split(".");
-						getStoreField(contact[keys[0]], keys[1]).value = value;
-					}
-					// TODO remove existing value?
-				}
-			},
-			_deleteContact: function(){
-				this.loadedStores.contacts.remove(this.params.id);
-				// we want to be back to list
-				this.app.transitionToView(this.domNode, { target: "list" });
-			}
-		}
-	});
-</pre>
 
 <h3 id="createAppTips">Tips for creating an Application</h3>
 
@@ -622,21 +779,10 @@
 	In that case you might not want to load everything upfront. In this case the controller file of each view will be
 	used as the layer for the view.</p>
 
-<p>Note on page 29 of 1801 impact2013 slides</p>
-
-
-
-
-<a class="demoBtn demo" href="demo/contacts.php" target="_blank">View Demo</a>
 
 
 <h3>Conclusion</h3>
 
-<p>In this tutorial, we've learned about Dijit's powerful template system as implemented by the mixins
-	<code>_TemplatedMixin</code> and <code>_WidgetsInTemplateMixin</code>, and how you can use this system to quickly
-	create your own custom widgets for use in your applications. We've reviewed how the template system's <em>attach
-	points</em> and <em>event attachments</em> allow you to quickly bind DOM elements to your code, and how to replace
-	values in your template &mdash; as well as how to include other widgets in your widget template to create
-	"uber-widgets".</p>
+<p>In this tutorial, we've learned how to build a Contacts Application with dojox/app.  To see the code used for this
+Contacts application go to: <a href="https://github.com/cjolif/dojo-contacts-app">https://github.com/cjolif/dojo-contacts-app</a></p>
 
-<p>Happy widget building!</p>

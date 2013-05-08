@@ -1,6 +1,6 @@
-define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/query", "dojo/dom-class",
+define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/Deferred", "dojo/query", "dojo/dom-class",
 	"dijit/registry", "dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
-	function(array, lang, has, when, query, domClass, registry){
+	function(array, lang, has, when, Deferred, query, domClass, registry){
 
 	var DATA_MAPPING = {
 		"phonehome": "phoneNumbers.home",
@@ -24,12 +24,27 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 	};
 
 	return {
-		beforeActivate: function(previousView){
-			// get the id of the displayed contact from the params
+		beforeActivate: function(){
+			// in case we are still under saving previous modifications, let's wait for
+			// the operation to be completed as use resulting contact as input
+			var view = this;
+			when(view._savePromise, function(contact){
+				view._savePromise = null;
+				view._beforeActivate(contact);
+			});
+		},
+		_beforeActivate: function(contact){
+			// get the id of the displayed contact from the params if we don't have a contact
+			// or from the contact if we have one
+			if(contact){
+				this.params.id = contact.id;
+			}
 			var id = this.params.id;
 
 			// are we in edit mode or not? if we are we need to slightly update the view for that
 			var edit = this.params.edit;
+			// are we in create mode
+			var create = (typeof id === "undefined");
 			// change widgets readonly value based on that
 			query("input", this.domNode).forEach(function(node){
 				registry.byNode(node).set("readOnly", !edit);
@@ -48,17 +63,21 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 			// also update the edit & ok button to reference the currently displayed item
 			editButtonOptions.params.id = id;
 			var cancelButtonOptions = this.cancelButton.transitionOptions;
-			if(typeof id === "undefined"){
+			if(create){
 				// if we cancel we want to go back to main view
 				cancelButtonOptions.target = "list";
 				if(cancelButtonOptions.params.id){
 					delete cancelButtonOptions.params.id;
 				}
-				domClass.add(this.backButton.domNode, "create");
 			}else{
 				cancelButtonOptions.target = "detail";
 				cancelButtonOptions.params.id = id;
-				domClass.remove(this.backButton.domNode, "create");
+			}
+			// hide back button in edit mode
+			if(edit){
+				domClass.add(this.backButton.domNode, "hidden");
+			}else{
+				domClass.remove(this.backButton.domNode, "hidden");
 			}
 			// cancel button must be shown in edit mode only, same for delete button if we are not creating a new contact
 			this.cancelButton.domNode.style.display = edit?"":"none";
@@ -68,10 +87,12 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 			// if nothing selected skip that part
 			var view = this;
 			var promise = null;
-			if(typeof id !== "undefined"){
+			if(!create && !contact){
 				id = id.toString();
 				// get the contact on the store
 				promise = this.loadedStores.contacts.get(id);
+			}else{
+				promise = contact;
 			}
 			when(promise, function(contact){
 				view.firstname.set("value", contact ? contact.name.givenName : null);
@@ -101,15 +122,18 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 		},
 		_saveForm: function(){
 			var id = this.params.id, view = this;
+			view._savePromise = new Deferred();
 			if(typeof id === "undefined"){
 				view._createContact();
 			}else{
 				// get the contact on the store
-				var promise = this.loadedStores.contacts.get(id);
+				var promise = this.loadedStores.contacts.get(id.toString());
 				when(promise, function(contact){
 					view._saveContact(contact);
 					// save the updated item into the store
-					view.loadedStores.contacts.put(contact);
+					when(view.loadedStores.contacts.put(contact), function(contact){
+						view._savePromise.resolve(contact);
+					});
 				});
 			}
 		},
@@ -122,11 +146,11 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 				"emails": [],
 				"organizations": []
 			};
-			// we created a new id update navigation
-			var editButtonOptions = this.editButton.transitionOptions;
-			editButtonOptions.params.id = contact.id;
+			var view = this;
 			this._saveContact(contact);
-			this.loadedStores.contacts.add(contact);
+			when(this.loadedStores.contacts.add(contact), function(contact){
+				view._savePromise.resolve(contact);
+			});
 		},
 		_saveContact: function(contact){
 			// set back the values on the contact object
@@ -162,7 +186,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/qu
 			}
 		},
 		_deleteContact: function(){
-			this.loadedStores.contacts.remove(this.params.id);
+			this.loadedStores.contacts.remove(this.params.id.toString());
 			// we want to be back to list
 			this.app.transitionToView(this.domNode, { target: "list" });
 		}

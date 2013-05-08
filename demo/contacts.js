@@ -16,13 +16,13 @@ define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!demo/contacts.json
 		Application(json.parse(config));
 	};
 	// check if cordova project's here
-//	request("../dcordova/sniff.js").then(function(){
+	request("../dcordova/sniff.js").then(function(){
 		// cordova project is here, sniff cordova features and load the app
-//		require(["dcordova/sniff"], function(){
-//			init();
-//		});
-//	}, function(){
+		require(["dcordova/sniff"], function(){
+			init();
+		});
+	}, function(){
 		// cordova project is not here, directly load the app
 		init();
-//	});
+	});
 });
