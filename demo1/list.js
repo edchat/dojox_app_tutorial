@@ -1,9 +1,9 @@
-define(["dojox/mobile/EdgeToEdgeStoreList"],
+define(["dojox/mobile/EdgeToEdgeStoreList", "dojox/mobile/FilteredListMixin"],
 	function(){
 	return {
 		init: function(){
 			this.contacts.on("click", function(e){
-				console.log(e.target.innerHTML + ": was clicked.");
+				alert(e.target.innerHTML + ": was clicked.");
 			});
 		}
 	};

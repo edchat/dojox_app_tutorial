@@ -1,9 +1,9 @@
 <div class="mblBackground">
 	<div data-dojo-type="dojox/mobile/Heading" data-dojo-props="fixed: 'top'">
-		${nls.contacts}
+		Contacts
 	</div>
-	<div data-dojo-type="dojox/mobile/EdgeToEdgeStoreList"
+	<div data-dojo-type="dojox/mobile/EdgeToEdgeStoreList" data-dojo-mixins="dojox/mobile/FilteredListMixin"
 			 data-dojo-attach-point="contacts"
-			 data-dojo-props="store: this.loadedStores.contacts, labelProperty: 'displayName'">
-	</div>
+			 data-dojo-props="store: this.loadedStores.contacts, labelProperty: 'displayName',
+			  placeHolder: 'Search'"></div>
 </div>

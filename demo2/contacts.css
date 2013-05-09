@@ -1,0 +1,14 @@
+@media screen and (min-width: 501px) {
+  	.leftpanel {
+    	width: 250px;
+		border-right:1px solid black;
+		z-index:100;
+	}
+	.backButton {
+		display: none;
+	}
+}
+
+.hidden {
+	display: none;
+}
