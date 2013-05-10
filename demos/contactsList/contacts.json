@@ -2,7 +2,7 @@
 	"id": "contactsApp",
 	"loaderConfig": {
 		"paths": {
-			"contactsApp": "../demo2"
+			"contactsApp": "../contactsList"
 		}
 	},
 	"dependencies": [
@@ -17,8 +17,6 @@
 		"dojox/app/controllers/Transition",
 		"dojox/app/controllers/Layout"
 	],
-	"nls": "demo2/nls/contacts",
-	"defaultTransition": "slide",
 	"defaultView": "list",
 	"stores": {
 		"contacts": {
@@ -86,31 +84,8 @@
 	},
 	"views": {
 		"list": {
-			"controller": "demo2/list",
-			"template": "demo2/list.html",
-			"nls": "demo2/nls/list",
-			"has": {
-				"!phone": {
-					"constraint": "left"
-				}
-			}
-		},
-		"detail": {
-			"controller": "demo2/detail",
-			"template": "demo2/detail.html",
-			"nls": "demo2/nls/detail"
-		}
-	},
-	"has": {
-		"html5history": {
-			"controllers": [
-				"dojox/app/controllers/History"
-			]
-		},
-		"!html5history": {
-			"controllers": [
-				"dojox/app/controllers/HistoryHash"
-			]
+			"controller": "contactsList/list",
+			"template": "contactsList/list.html"
 		}
 	}
 }

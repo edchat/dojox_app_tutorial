@@ -52,7 +52,7 @@
 	<p>This is how the <strong>Contacts application list</strong> view will look on an <strong>iPhone</strong> iOS Simulator.</p>
 	<div style="float: left; width: 50%;">
 		<label  style="margin-left: 90px;">Contacts List</label>
-		<img src="images/demo1List.png" alt="Phone Contacts List View" style="margin:0 auto;display:block;" />
+		<img src="images/contactsList.png" alt="Phone Contacts List View" style="margin:0 auto;display:block;" />
 	</div>
 </div>
 
@@ -75,7 +75,7 @@
 <p>As well as your main application (AMD) module:</p>
 <pre class="brush: js; html-script: true;">
 &lt;script type="text/javascript"&gt;
-	require(["demo1/contacts"]);
+	require(["contactsList/contacts"]);
  &lt;/script&gt;
 </pre>
 
@@ -105,7 +105,7 @@
 		"id": "contactsApp",
 		"loaderConfig": {
 			"paths": {
-				"contactsApp": "../demo1"
+				"contactsApp": "../contactsList"
 			}
 		},
 		"dependencies": [
@@ -187,8 +187,8 @@
 		},
 		"views": {
 			"list": {
-				"controller": "demo1/list",
-				"template": "demo1/list.html"
+				"controller": "contactsList/list",
+				"template": "contactsList/list.html"
 			}
 		}
 	}
@@ -198,7 +198,7 @@
 <p>The main module will define the configuration flags needed by the configuration file and load the configuration file
 	to instantiate the application (contacts.js)</p>
 <pre class="brush: js; html-script: true;">
-	define(["dojo/json", "dojo/text!demo1/contacts.json", "dojox/app/main",
+	define(["dojo/json", "dojo/text!contactsList/contacts.json", "dojox/app/main",
 			"dojox/mobile/common"],
 		function(json, config, Application, common){
 			Application(json.parse(config));
@@ -246,10 +246,11 @@
 	});
 </pre>
 
-<a class="demoBtn demo" href="demo1/contacts.php" target="_blank">View Demo1: List View</a>
+<a class="demoBtn demo" href="demos/contactsList/contacts.php" target="_blank">Run the contactsList App</a>
+<a href="https://github.com/edchat/dojox_app_tutorial">View the contactsList App source on github</a>
 
 
-<h3 id="demo2AddDetails">Next we will add the <strong>Details view</strong> to the Contacts Application</h3>
+<h3 id="contactsAppBaseAddDetails">Next we will add the <strong>Details view</strong> to the Contacts Application</h3>
 <p>And we will add:</p>
 	<ul>
 		<li>Support for contacts to be <strong>edited, added</strong> and <strong>deleted</strong>.</li>
@@ -335,7 +336,7 @@
 <pre class="brush: js; html-script: true;">
 	// we use 'define' and not 'require' to workaround Dojo build system limitation that prevents from making of this file
 	// a layer if it using 'require'
-	define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!demo2/contacts.json", "dojox/app/main", "dojox/mobile/common"],
+	define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!contactsAppBase/contacts.json", "dojox/app/main", "dojox/mobile/common"],
 		function(has, request, json, config, Application, common){
 
 		 has.add("html5history", !has("ie") || has("ie") > 9);
@@ -773,7 +774,7 @@
 </pre>
 
 
-<a class="demoBtn demo" href="demo2/contacts.php" target="_blank">View Demo2 List and Details</a>
+<a class="demoBtn demo" href="demos/contactsAppBase/contacts.php" target="_blank">View Contacts App List and Details</a>
 
 <h3 id="updatejsoncordova">Update the JSON configuration file for cordova.</h3>
 
@@ -848,7 +849,7 @@
 </pre>
 
 
-<a class="demoBtn demo" href="demo/contacts.php" target="_blank">View Full Demo</a>
+<a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">View Full Contacts App Demo</a>
 
 
 <h3 id="createAppTips">Tips for creating an Application</h3>

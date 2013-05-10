@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 
-		<title>Contacts Demo: Using dojox/app</title>
+		<title>Full Contacts App Demo: Using dojox/app</title>
 		<link rel="stylesheet" href="contacts.css">
 	<!--
 		<link rel="stylesheet" href="style.css" media="screen">
@@ -25,7 +25,7 @@
 				async: true,
 				dojoBlankHtmlUrl: location.pathname.replace(/\/[^/]+$/, "") + "/blank.html",
 				packages: [{
-					name: "demo",
+					name: "contactsAppFull",
 					location: location.pathname.replace(/\/[^/]+$/, "") + "/"
 				}]
 			};
@@ -36,7 +36,7 @@
 		?>
 
 		<script type="text/javascript">
-			require(["demo/contacts"]);
+			require(["contactsAppFull/contacts"]);
 		</script>
 
 	</body>

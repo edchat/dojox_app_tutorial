@@ -5,12 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 
-		<title>Contacts Demo: Using dojox/app</title>
-		<link rel="stylesheet" href="contacts.css">
-	<!--
-		<link rel="stylesheet" href="style.css" media="screen">
-		<link rel="stylesheet" href="../../../resources/style/demo.css" media="screen">
-	-->
+		<title>Contacts List Demo: Using dojox/app</title>
 		<?php
 			include_once($_SERVER['DOCUMENT_ROOT'] . implode('/', array_slice(explode('/', dirname($_SERVER['PHP_SELF'])), 0, 4)) . '/Utils.php');
 		?>
@@ -25,7 +20,7 @@
 				async: true,
 				dojoBlankHtmlUrl: location.pathname.replace(/\/[^/]+$/, "") + "/blank.html",
 				packages: [{
-					name: "demo2",
+					name: "contactsList",
 					location: location.pathname.replace(/\/[^/]+$/, "") + "/"
 				}]
 			};
@@ -36,7 +31,7 @@
 		?>
 
 		<script type="text/javascript">
-			require(["demo2/contacts"]);
+			require(["contactsList/contacts"]);
 		</script>
 
 	</body>
