@@ -1,10 +1,5 @@
 {
 	"id": "contactsApp",
-	"loaderConfig": {
-		"paths": {
-			"contactsApp": "../contactsAppBase"
-		}
-	},
 	"dependencies": [
 		"dojo/store/Observable",
 		"dojox/mobile/Heading",
@@ -86,8 +81,8 @@
 	},
 	"views": {
 		"list": {
-			"controller": "contactsAppBase/list",
-			"template": "contactsAppBase/list.html",
+			"controller": "contactsAppBase/views/list",
+			"template": "contactsAppBase/views/list.html",
 			"nls": "contactsAppBase/nls/list",
 			"has": {
 				"!phone": {
@@ -95,10 +90,10 @@
 				}
 			}
 		},
-		"detail": {
-			"controller": "contactsAppBase/detail",
-			"template": "contactsAppBase/detail.html",
-			"nls": "contactsAppBase/nls/detail"
+		"details": {
+			"controller": "contactsAppBase/views/details",
+			"template": "contactsAppBase/views/details.html",
+			"nls": "contactsAppBase/nls/details"
 		}
 	},
 	"has": {

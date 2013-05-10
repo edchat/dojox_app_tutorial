@@ -1,10 +1,5 @@
 {
 	"id": "contactsApp",
-	"loaderConfig": {
-		"paths": {
-			"contactsApp": "../contactsList"
-		}
-	},
 	"dependencies": [
 		"dojo/store/Observable",
 		"dojox/mobile/Heading",
@@ -84,8 +79,8 @@
 	},
 	"views": {
 		"list": {
-			"controller": "contactsList/list",
-			"template": "contactsList/list.html"
+			"controller": "contactsList/views/list",
+			"template": "contactsList/views/list.html"
 		}
 	}
 }

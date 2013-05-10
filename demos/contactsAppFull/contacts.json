@@ -1,10 +1,5 @@
 {
 	"id": "contactsApp",
-	"loaderConfig": {
-		"paths": {
-			"contactsApp": "../contactsAppFull"
-		}
-	},
 	"dependencies": [
 			"dojo/store/Observable",
 			"dojox/mobile/Heading",
@@ -93,8 +88,8 @@
 	},
 	"views": {
 		"list": {
-			"controller": "contactsAppFull/list",
-			"template": "contactsAppFull/list.html",
+			"controller": "contactsAppFull/views/list",
+			"template": "contactsAppFull/views/list.html",
 			"nls": "contactsAppFull/nls/list",
 			"has": {
 				"!phone": {
@@ -102,10 +97,10 @@
 				}
 			}
 		},
-		"detail": {
-			"controller": "contactsAppFull/detail",
-			"template": "contactsAppFull/detail.html",
-			"nls": "contactsAppFull/nls/detail"
+		"details": {
+			"controller": "contactsAppFull/views/details",
+			"template": "contactsAppFull/views/details.html",
+			"nls": "contactsAppFull/nls/details"
 		}
 	},
 	"has": {

@@ -58,17 +58,17 @@
 
 <h3 id="createhtml">Create the main HTML or php file for your application (contacts.php).</h3>
 
-<p>Dojo must be loaded.</p>
-<pre class="brush: js; html-script: true;">
-&lt;script type="text/javascript"  
-		src="path-to-dojo/dojo/dojo.js" data-dojo-config= "async: true"&gt;
- &lt;/script&gt;
-</pre>
-
 <p>The Dojo mobile CSS (if using Dojo Mobile):</p>
 <pre class="brush: js; html-script: true;">
 &lt;script type="text/javascript"  
 	src="path-to-dojo/dojox/mobile/deviceTheme.js"&gt;
+ &lt;/script&gt;
+</pre>
+
+<p>Dojo must be loaded, for this tutorial we use a php util to load the correct dojo, but normally it would look like this:</p>
+<pre class="brush: js; html-script: true;">
+&lt;script type="text/javascript"  
+		src="path-to-dojo/dojo/dojo.js" data-dojo-config= "async: true"&gt;
  &lt;/script&gt;
 </pre>
 
@@ -103,11 +103,6 @@
 <pre class="brush: js; html-script: true;">
 	{
 		"id": "contactsApp",
-		"loaderConfig": {
-			"paths": {
-				"contactsApp": "../contactsList"
-			}
-		},
 		"dependencies": [
 			"dojo/store/Observable",
 			"dojox/mobile/Heading",
@@ -155,31 +150,7 @@
 						{
 							"id": "2",
 							"displayName": "Christophe Jolif",
-							"name": {
-								"givenName": "Christophe",
-								"familyName": "Jolif"
-							},
-							"emails": [
-								{
-									"type": "home",
-									"value": "him@myhome.com"
-								},
-								{
-									"type": "work",
-									"value": "dev@dev.com"
-								}
-							],
-							"phoneNumbers": [
-								{
-									"type": "home",
-									"value": "11-43-81-63-19"
-								},
-								{
-									"type": "work",
-									"value": "11-48-07-13-38"
-								}
-							],
-							"organizations": []
+							:   :   :
 						}
 					]
 				}
@@ -187,16 +158,15 @@
 		},
 		"views": {
 			"list": {
-				"controller": "contactsList/list",
-				"template": "contactsList/list.html"
+				"controller": "contactsList/views/list",
+				"template": "contactsList/views/list.html"
 			}
 		}
 	}
 </pre>
 
 <h3 id="createmain">Create the main module for your application.</h3>
-<p>The main module will define the configuration flags needed by the configuration file and load the configuration file
-	to instantiate the application (contacts.js)</p>
+<p>The main module will load the configuration file and instantiate the application (contacts.js)</p>
 <pre class="brush: js; html-script: true;">
 	define(["dojo/json", "dojo/text!contactsList/contacts.json", "dojox/app/main",
 			"dojox/mobile/common"],
@@ -247,19 +217,10 @@
 </pre>
 
 <a class="demoBtn demo" href="demos/contactsList/contacts.php" target="_blank">Run the contactsList App</a>
-<a href="https://github.com/edchat/dojox_app_tutorial">View the contactsList App source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsList">View the contactsList App source on github</a>
 
 
 <h3 id="contactsAppBaseAddDetails">Next we will add the <strong>Details view</strong> to the Contacts Application</h3>
-<p>And we will add:</p>
-	<ul>
-		<li>Support for contacts to be <strong>edited, added</strong> and <strong>deleted</strong>.</li>
-		<li>Support to <strong>Transition</strong> from the <strong>list</strong> view to the <strong>details</strong> view.</li>
-		<li><strong>History</strong> support to go back to the list view, using <strong>"has"</strong> based config support.</li>
-		<li>Support for a <strong>tablet view</strong> in addition to a <strong>phone view</strong>, using <strong>"has"</strong> based config support.</li>
-		<li><strong>NLS</strong> support for strings for the application and for each of the views.</li>
-	</ul>
-
 <p>The <strong>Contacts application</strong> will include two views.  The first view will include the filtered
 	<strong>list of contacts</strong>, and the second view will show the <strong>details of a contact</strong> and
 	allow the contact to be edited or deleted.</p>
@@ -275,14 +236,31 @@
 	</div>
 </div>
 <div style="float: left; width: 100%; margin-top: 20px; margin-bottom: 20px;">
-		<p>This is how the <strong>Contacts application</strong> will look on an <strong>iPad</strong> iOS Simulator.</p>
-		<label style="margin-left: 90px;">Contacts List and Details</label>
+		<p>This is how the <strong>Contacts application</strong> will look on an <strong>iPad</strong> iOS Simulator.
+			<strong>Take note of these differences between the phone and tablet views</strong>:</p>
+		<ul>
+			<li>The list on the phone includes the ">" but it is not included on the tablet.</li>
+			<li>The list on the tablet highlights the selection, but not on the phone.</li>
+			<li>The details view on the phone includes a "back" button with the label "Contacts", but on the tablet that button would not be displayed.</li>
+			<li>The details view on the tablet is showing "edit" mode, the "edit" mode on the phone would look very similar to this.</li>
+		</ul>
+		<label style="margin-left: 90px;">Contacts List and Details (in edit mode)</label>
 		<img src="images/tabletImage.png" alt="Tablet/Desktop Layout" style="margin:0 auto;display:block;width: 540px;height: 396px;" />
 </div>
 
-<h3 id="updatecss">Update the CSS for the application.</h3>
+<p>In order to support the Details view we will also add:</p>
+	<ul>
+		<li>Support for contacts to be <strong>edited, added</strong> and <strong>deleted</strong>.</li>
+		<li>Support to <strong>Transition</strong> from the <strong>list</strong> view to the <strong>details</strong> view.</li>
+		<li><strong>History</strong> support to go back to the list view, using <strong>"has"</strong> based config support.</li>
+		<li>Support for a <strong>tablet view</strong> in addition to a <strong>phone view</strong>, using <strong>"has"</strong> based config support.</li>
+		<li><strong>NLS</strong> support for strings for the application and for each of the views.</li>
+	</ul>
 
-<p>We need to add the application CSS file to the html:</p>
+
+<h3 id="updatecss">Add the CSS for the application.</h3>
+
+<p>We need to add the application CSS file to the html/php (contacts.php):</p>
 <pre class="brush: js; html-script: true;">
 &lt;link rel="stylesheet" href="contacts.css"&gt;
 </pre>
@@ -290,7 +268,7 @@
 <p>The (contacts.css) <strong>application CSS</strong> file includes a media query with a min-width of 501px,
 	so that on a tablet/desktop sized screen the .leftpane will only be set with a width of 250px and a border,
 	and the .backButton will be hidden. The CSS file looks like this:</p>
-<pre class="brush: js; html-script: true;">
+<pre class="brush: js; html-script: true; highlight: [1]">
 	@media screen and (min-width: 501px) {
 	  	.leftpanel {
 	    	width: 250px;
@@ -306,34 +284,38 @@
 		display: none;
 	}
 </pre>
+<p class="proTip">If changes are made to the min-width in the media query, those changes would also have to be made
+	in the has.add("phone"...) code in the main module (contacts.js).</p>
 
 <h3 id="updatejson">Update the JSON configuration file.</h3>
 
-<p>The JSON configuration file <strong>contacts.json</strong> has to be updated to add the <strong>detail</strong>
+<p>The JSON configuration file <strong>contacts.json</strong> has to be updated to add the <strong>details</strong>
 	view controller, template and nls settings to the JSON file, and the <strong>list</strong> view is also updated
 	so that when not on a phone it will use a constraint of left for the tablet layout.</p>
-<pre class="brush: js; html-script: true;">
+<pre class="brush: js; html-script: true; highlight: [5,8,12,13,14,15]">
 	"views": {
-	  "list": {
-	    "controller": "contactsApp/list",
-	    "template": "contactsApp/list.html",
-	    "nls": "contactsApp/nls/list",
-	    "has": {
-	      "!phone": {
-	        "constraint": "left"
-	      }
-	   },
-	   "detail": {
-	     "controller": "contactsApp/detail",
-	     "template": "contactsApp/detail.html",
-	     "nls": "contactsApp/nls/detail"
-	   }
+		"list": {
+			"controller": "contactsAppBase/views/list",
+			"template": "contactsAppBase/views/list.html",
+			"nls": "contactsAppBase/nls/list",
+			"has": {
+				"!phone": {
+					"constraint": "left"
+				}
+			}
+		},
+		"details": {
+			"controller": "contactsAppBase/views/details",
+			"template": "contactsAppBase/views/details.html",
+			"nls": "contactsAppBase/nls/details"
+		}
 	}
 </pre>
 
 <h3 id="updatemain">Update the main module of your application.</h3>
-<p>The main module (contacts.js) will be updated to  to add the has check for <strong>phone and html5history</strong>.</p>
-<pre class="brush: js; html-script: true;">
+<p>The main module (contacts.js) will be updated to define the configuration flags needed by the configuration file
+	using has.add for <strong>phone and html5history</strong>.</p>
+<pre class="brush: js; html-script: true; highlight: [6,7]">
 	// we use 'define' and not 'require' to workaround Dojo build system limitation that prevents from making of this file
 	// a layer if it using 'require'
 	define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!contactsAppBase/contacts.json", "dojox/app/main", "dojox/mobile/common"],
@@ -354,7 +336,7 @@
 	<li>A dojox/mobile/EdgeToEdgeStoreList with a dojox/mobile/FilteredListMixin and uses ContactListItem as the itemRenderer.</li>
 </ul>
 
-<pre class="brush: html;">
+<pre class="brush: html; highlight: [3,7,12,14,15,19,21]">
 	&lt;div class="leftpanel mblBackground"&gt;
 		&lt;script type="dojo/require"&gt;
 			has: "dojo/has"
@@ -364,7 +346,7 @@
 			${nls.contacts}
 			&lt;button data-dojo-type="dojox/mobile/ToolBarButton"
 					style="position: absolute; right: 0"
-					data-dojo-props="target: 'detail',
+					data-dojo-props="target: 'details',
 								transitionOptions: { params: { edit: true } }"
 					data-dojo-attach-point="add"&gt;${nls.add}&lt;/button&gt;
 		&lt;/div&gt;
@@ -383,19 +365,19 @@
 <p>The updated <strong>"list" view controller</strong> (list.js) includes:</p>
 <ul>
 	<li>Returns a specific ListItem subclass (ContactListItem) that deals in particular with handling the selection to
-		transition to the detail view and with multi-channel (hiding the arrow on tablets).</li>
-	<li>The <strong>init</strong> function which is called when the controller is loaded the first time handles selecting
-		the new item when one is added to the list.</li>
+		transition to the details view and with multi-channel (hiding the arrow on tablets).</li>
+	<li>The <strong>init</strong> function which is called when the controller is loaded the first time handles clearing
+		the selection when the "add" button is pressed, and selecting the new item when one is added to the list.</li>
 	<li>And the <strong>beforeActivate</strong> function which is called before the view is activated each time it is
 		shown, handles the tablet case where if no list item is selected it will select the first item by default.</li>
 </ul>
 
-<pre class="brush: js; html-script: true;">
+<pre class="brush: js; html-script: true; highlight: [4,13,28,35,47,52]">
 	define(["dojo/_base/declare", "dojo/_base/array", "dojo/has", "dojox/mobile/ListItem",
 		"dojox/mobile/EdgeToEdgeStoreList", "dojox/mobile/FilteredListMixin"],
 		function(declare, array, has, ListItem){
 		var ContactListItem = declare(ListItem, {
-			target: "detail",
+			target: "details",
 			clickable: true,
 			// we don't get an arrow if we are on a two panes layout (tablet)
 			noArrow: !has("phone"),
@@ -440,7 +422,7 @@
 						this.contacts.selectItem(item);
 						// transition
 						this.app.transitionToView(this.domNode, {
-							target: "detail",
+							target: "details",
 							params: {
 								id: item.id
 							}
@@ -452,10 +434,10 @@
 	});
 </pre>
 
-<h3 id="updatedetailviews">Add the <strong>"detail"</strong> view, including template, and controller.</h3>
+<h3 id="updatedetailsviews">Add the <strong>"details"</strong> view, including template, and controller.</h3>
 
 
-<p><strong>"detail" view template</strong> (detail.html) includes:</p>
+<p><strong>"details" view template</strong> (details.html) includes:</p>
 <ul>
 	<li>A dojox/mobile/Heading which uses NLS strings like ${nls.details}.</li>
 	<li>The Heading also has dojox/mobile/ToolBarButton(s) for <strong>Back</strong>, and <strong>Edit</strong>, and
@@ -482,13 +464,13 @@
 			&lt;button data-dojo-type="dojox/mobile/ToolBarButton"
 					data-dojo-attach-point="cancelButton"
 					style="position: absolute; left: 0; display: 'none'"
-					data-dojo-props="target: 'detail',
+					data-dojo-props="target: 'details',
 						transitionOptions: { params: { edit: false } }"&gt;${nls.cancel}&lt;/button&gt;
 			${nls.details}
 			&lt;button data-dojo-type="dojox/mobile/ToolBarButton"
 					data-dojo-attach-point="editButton"
 					style="position: absolute; right: 0"
-					data-dojo-props="target: 'detail',
+					data-dojo-props="target: 'details',
 						transitionOptions: { params: { } }"&gt;&lt;/button&gt;
 		&lt;/div&gt;
 		&lt;div data-dojo-type="dojox/mobile/ScrollableView"&gt;
@@ -564,7 +546,7 @@
 </pre>
 
 
-<p>The <strong>"detail" view controller</strong> handles the following:</p>
+<p>The <strong>"details" view controller</strong> handles the following:</p>
 <ul>
 	<li>Initializing the form with the values from the selected contact from the store using the loadedStores property.</li>
 	<li>Changing from <strong>View</strong> mode (readOnly) to <strong>Edit</strong> mode to make updates
@@ -648,7 +630,7 @@
 						delete cancelButtonOptions.params.id;
 					}
 				}else{
-					cancelButtonOptions.target = "detail";
+					cancelButtonOptions.target = "details";
 					cancelButtonOptions.params.id = id;
 				}
 				// hide back button in edit mode
@@ -774,39 +756,18 @@
 </pre>
 
 
-<a class="demoBtn demo" href="demos/contactsAppBase/contacts.php" target="_blank">View Contacts App List and Details</a>
+<a class="demoBtn demo" href="demos/contactsAppBase/contacts.php" target="_blank">Run the contactsAppBase</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppBase">View the contactsAppBase source on github</a>
+
 
 <h3 id="updatejsoncordova">Update the JSON configuration file for cordova.</h3>
 
 <p>The JSON configuration file <strong>contacts.json</strong> has to be updated in two sections to support
 	<strong>cordova</strong>
-	view controller, template and nls settings to the JSON file, and the <strong>list</strong> view is also updated
-	so that when not on a phone it will use a constraint of left for the tablet layout.</p>
-<pre class="brush: js; html-script: true;">
-	"views": {
-	  "list": {
-	    "controller": "contactsApp/list",
-	    "template": "contactsApp/list.html",
-	    "nls": "contactsApp/nls/list",
-	    "has": {
-	      "!phone": {
-	        "constraint": "left"
-	      }
-	   },
-	   "detail": {
-	     "controller": "contactsApp/detail",
-	     "template": "contactsApp/detail.html",
-	     "nls": "contactsApp/nls/detail"
-	   }
-	}
-</pre>
-
-
-
-<h3 id="updatemaincordova">Update the main module of your application for cordova.</h3>
-<p>The main module (contacts.js) will be updated to add the code to check for and support <strong>cordova</strong>.</p>
 <ul>
-	<li>The <strong>stores</strong> will be updated with a <strong>has</strong> check for cordova to use a dcordova/ContactsStore.</li>
+	<li>The <strong>stores</strong> will be updated with a <strong>has</strong> check for cordova to use a
+		dcordova/ContactsStore. This shows the power of using <strong>has</strong> checking in the config along
+	with the dojo/store so that the backend data can be swapped out without having to make any changes to the views or controllers.</li>
 	<li>A <strong>has</strong> check for cordova will be used to update the <strong>dependencies</strong> to use a dcordova/ContactsStore.</li>
 </ul>
 
@@ -848,8 +809,42 @@
 	}
 </pre>
 
+<h3 id="updatemaincordova">Update the main module of your application for cordova.</h3>
+<p>The main module (contacts.js) will be updated to add the code to check for and support <strong>cordova</strong>.</p>
+<pre class="brush: js; html-script: true; highlight: [19, 21,22,26]">
+	// we use 'define' and not 'require' to workaround Dojo build system limitation that prevents from making of this file
+	// a layer if it using 'require'
+	define(["dojo/sniff", "dojo/request", "dojo/json", "dojo/text!contactsAppFull/contacts.json", "dojox/app/main", "dojox/mobile/common"],
+		function(has, request, json, config, Application, common){
 
-<a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">View Full Contacts App Demo</a>
+		// if we exclude the cordova trick the init could be as simple as:
+		// has.add("html5history", !has("ie") || has("ie") > 9);
+		// has.add("phone", ((window.innerWidth || document.documentElement.clientWidth) <= common.tabletSize));
+		// Application(json.parse(config));
+
+		// trick to know if cordova optional project is here or not
+		var init = function(){
+			// populate has flag on whether html5 history is correctly supported or not
+			has.add("html5history", !has("ie") || has("ie") > 9);
+			has.add("phone", ((window.innerWidth || document.documentElement.clientWidth) <= common.tabletSize));
+			Application(json.parse(config));
+		};
+		// check if cordova project's here
+		request("../dcordova/sniff.js").then(function(){
+			// cordova project is here, sniff cordova features and load the app
+			require(["dcordova/sniff"], function(){
+				init();
+			});
+		}, function(){
+			// cordova project is not here, directly load the app
+			init();
+		});
+	});
+</pre>
+
+
+<a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">Run the Full Contacts App Demo</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppFull">View the contactsAppFull source on github</a>
 
 
 <h3 id="createAppTips">Tips for creating an Application</h3>
