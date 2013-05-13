@@ -5,22 +5,22 @@ var profile = {
 	// relative to this file
 	basePath: "../..",
 	// relative to base path
-	releaseDir: "./contactsApp-release",
+	releaseDir: "./contactsAppFull-release",
 	action: "release",
 	cssOptimize: "comments",
 	mini: true,
 	packages:[{
 		name: "dojo",
-		location: "./dojo"
+		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dojo"
 	},{
 		name: "dijit",
-		location: "./dijit"
+		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dijit"
 	},{
-		name: "contactsApp",
-		location: "./contactsApp"
+		name: "contactsAppFull",
+		location: "./contactsAppFull"
 	},{
 		name: "dojox",
-		location: "./dojox"
+		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dojox"
 	}],
 	selectorEngine: "acme",
 	layers: {
@@ -28,8 +28,8 @@ var profile = {
 			boot: true,
 			customBase: true
 		},
-		"contactsApp/contacts": {
-			include: ["contactsApp/contacts"]
+		"contactsAppFull/contacts": {
+			include: ["contactsAppFull/contacts"]
 		}
 	}
 };

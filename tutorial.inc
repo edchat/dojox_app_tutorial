@@ -268,7 +268,7 @@
 <p>The (contacts.css) <strong>application CSS</strong> file includes a media query with a min-width of 501px,
 	so that on a tablet/desktop sized screen the .leftpane will only be set with a width of 250px and a border,
 	and the .backButton will be hidden. The CSS file looks like this:</p>
-<pre class="brush: js; html-script: true; highlight: [1]">
+<pre class="brush: js; html-script: true; highlight: [1,3,4,8]">
 	@media screen and (min-width: 501px) {
 	  	.leftpanel {
 	    	width: 250px;
@@ -437,19 +437,11 @@
 <h3 id="updatedetailsviews">Add the <strong>"details"</strong> view, including template, and controller.</h3>
 
 
-<p><strong>"details" view template</strong> (details.html) includes:</p>
+<p><strong>The "details" view template</strong> (details.html) includes:</p>
 <ul>
 	<li>A dojox/mobile/Heading which uses NLS strings like ${nls.details}.</li>
 	<li>The Heading also has dojox/mobile/ToolBarButton(s) for <strong>Back</strong>, and <strong>Edit</strong>, and
 		when in <strong>Edit</strong> mode, buttons for <strong>Cancel</strong> and <strong>Ok</strong>.</li>
-	<li>A dojox/mobile/ScrollableView with a dojox/mobile/FormLayout, and labels and fields for:</li>
-	<ul>
-		<li>Name (first name, and last name).</li>
-		<li>Company</li>
-		<li>Home and Work Phone</li>
-		<li>Home and Work Email</li>
-		<li>Delete button (in Edit mode)</li>
-	</ul>
 </ul>
 
 <pre class="brush: html;">
@@ -473,10 +465,30 @@
 					data-dojo-props="target: 'details',
 						transitionOptions: { params: { } }"&gt;&lt;/button&gt;
 		&lt;/div&gt;
-		&lt;div data-dojo-type="dojox/mobile/ScrollableView"&gt;
+		:	:	:
+	&lt;/div&gt;
+</pre>
+
+
+<p><strong>The "details" view template</strong> (details.html) also includes:</p>
+<ul>
+	<li>A dojox/mobile/ScrollableView with a dojox/mobile/FormLayout, and labels and fields for:</li>
+	<ul>
+		<li>Name (first name, and last name). Shown below.</li>
+		<li>Company. Shown below.</li>
+		<li>Home and Work Phone. Not shown below, very similar to "Company".</li>
+		<li>Home and Work Email. Not shown below, very similar to "Company"</li>
+		<li>Delete button (in Edit mode). Shown below.</li>
+	</ul>
+</ul>
+
+<pre class="brush: html; highlight: [8,12,21,30]">
+	&lt;div&gt;
+	:	:	:
+	&lt;div data-dojo-type="dojox/mobile/ScrollableView"&gt;
 			&lt;div data-dojo-type="dojox/mobile/FormLayout"&gt;
 				&lt;div&gt;
-					&lt;label for="company"&gt;${nls.name}&lt;/label&gt;
+					&lt;label for="firstname"&gt;${nls.name}&lt;/label&gt;
 					&lt;fieldset&gt;
 						&lt;input id="firstname" name="firstname"
 								data-dojo-type="dojox/mobile/TextArea"
@@ -497,48 +509,13 @@
 								data-dojo-attach-point="company"&gt;
 					&lt;/fieldset&gt;
 				&lt;/div&gt;
-				&lt;div&gt;
-					&lt;label for="phone-home"&gt;${nls.home}&lt;/label&gt;
-					&lt;fieldset&gt;
-						&lt;input id="phone-home" name="phone-home"
-								data-dojo-type="dojox/mobile/TextArea"
-								data-dojo-props="readOnly: true, placeHolder: '${nls.phone}'"
-								data-dojo-attach-point="phonehome"&gt;
-					&lt;/fieldset&gt;
-				&lt;/div&gt;
-				&lt;div&gt;
-					&lt;label for="phone-work"&gt;${nls.work}&lt;/label&gt;
-					&lt;fieldset&gt;
-						&lt;input id="phone-work" name="phone-work"
-								data-dojo-type="dojox/mobile/TextArea"
-								data-dojo-props="readOnly: true, placeHolder: '${nls.phone}'"
-								data-dojo-attach-point="phonework"&gt;
-					&lt;/fieldset&gt;
-				&lt;/div&gt;
-				&lt;div&gt;
-					&lt;label for="mail-home"&gt;${nls.home}&lt;/label&gt;
-					&lt;fieldset&gt;
-						&lt;input id="mail-home" name="mail-home"
-								data-dojo-type="dojox/mobile/TextArea"
-								data-dojo-props="readOnly: true, placeHolder: '${nls.mail}'"
-								data-dojo-attach-point="mailhome"&gt;
-					&lt;/fieldset&gt;
-				&lt;/div&gt;
-				&lt;div&gt;
-					&lt;label for="mail-work"&gt;${nls.work}&lt;/label&gt;
-					&lt;fieldset&gt;
-						&lt;input id="mail-work" name="mail-work"
-								data-dojo-type="dojox/mobile/TextArea"
-								data-dojo-props="readOnly: true, placeHolder: '${nls.mail}'"
-								data-dojo-attach-point="mailwork"&gt;
-					&lt;/fieldset&gt;
-				&lt;/div&gt;
+				:	:	:
 				&lt;div&gt;
 					&lt;div&gt;&lt;/div&gt;
 					&lt;button data-dojo-type="dojox/mobile/Button"
 							data-dojo-attach-point="deleteButton"
 							data-dojo-attach-event="onClick: _deleteContact"
-							class="mblRedButton" style="padding: 0 10px"&gt;${nls.delete}&lt;/button&gt;
+							class="mblRedButton" style="padding: 0 10px"&gt;${nls.remove}&lt;/button&gt;
 				&lt;/div&gt;
 			&lt;/div&gt;
 		&lt;/div&gt;
@@ -549,210 +526,239 @@
 <p>The <strong>"details" view controller</strong> handles the following:</p>
 <ul>
 	<li>Initializing the form with the values from the selected contact from the store using the loadedStores property.</li>
-	<li>Changing from <strong>View</strong> mode (readOnly) to <strong>Edit</strong> mode to make updates
-		or to <strong>Delete</strong> the contact.</li>
+</ul>
+
+	<pre class="brush: js; html-script: true; highlight: [41,43,53,55,58,59,61,73,78]">
+		define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
+			"dojo/Deferred", "dojo/query", "dojo/dom-class","dijit/registry",
+			"dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
+			function(array, lang, has, when, Deferred, query, domClass, registry){
+
+			var DATA_MAPPING = {
+				"phonehome": "phoneNumbers.home",
+				"phonework": "phoneNumbers.work",
+				"mailhome": "emails.home",
+				"mailwork": "emails.work"
+			};
+
+			var getStoreField = function(arr, type){
+				var index = array.indexOf(arr, function(item){
+					return (item.type == type);
+				});
+				if(index == -1){
+					// create one
+					arr.push({
+						type: type
+					});
+					index = arr.length - 1;
+				}
+				return arr[index];
+			};
+
+			return {
+				beforeActivate: function(){
+					// in case we are still under saving previous modifications, let's wait for
+					// the operation to be completed as use resulting contact as input
+					var view = this;
+					when(view._savePromise, function(contact){
+						view._savePromise = null;
+						view._beforeActivate(contact);
+					});
+				},
+				_beforeActivate: function(contact){
+					// get the id of the displayed contact from the params if we don't have a contact
+					// or from the contact if we have one
+					if(contact){
+						this.params.id = contact.id;
+					}
+					var id = this.params.id;
+					:	:	:
+
+					// let's fill the form with the currently selected contact
+					// if nothing selected skip that part
+					var view = this;
+					var promise = null;
+					if(!create && !contact){
+						id = id.toString();
+						// get the contact on the store
+						promise = this.loadedStores.contacts.get(id);
+					}else{
+						promise = contact;
+					}
+					when(promise, function(contact){
+						view.firstname.set("value", contact ? contact.name.givenName : null);
+						view.lastname.set("value", contact ? contact.name.familyName : null);
+						if(contact && contact.organizations && contact.organizations.length){
+							view.company.set("value", contact.organizations[0].name);
+						}else{
+							view.company.set("value", null);
+						}
+						// reset binding fields
+						for(var key in DATA_MAPPING){
+							view[key].set("value", null);
+						}
+						if(contact){
+							// set each phone number to the corresponding form field
+							array.forEach(contact.phoneNumbers, function(number){
+								// TODO deal with case where we don't support a particular field
+								view["phone"+number.type].set("value",  number.value);
+							});
+							// set each mail field to the corresponding form field
+							array.forEach(contact.emails, function(mail){
+								// TODO deal with case where we don't support a particular field
+								view["mail"+mail.type].set("value",  mail.value);
+							});
+						}
+					});
+				},
+				:	:	:
+		});
+	</pre>
+<p>The <strong>"details" view controller</strong> also handles the following:</p>
+<ul>
+	<li>Changing the details from <strong>View</strong> mode (readOnly) to <strong>Edit</strong> mode to make updates
+		and when called for a <strong>Create</strong>.</li>
+</ul>
+<pre class="brush: js; html-script: true; highlight: [12,17,23,33,51,52]">
+	:	:	:
+	return {
+	_beforeActivate: function(contact){
+		// get the id of the displayed contact from the params if we don't have a contact
+		// or from the contact if we have one
+		if(contact){
+			this.params.id = contact.id;
+		}
+		var id = this.params.id;
+
+		// are we in edit mode or not? if we are we need to slightly update the view for that
+		var edit = this.params.edit;
+		// are we in create mode
+		var create = (typeof id === "undefined");
+		// change widgets readonly value based on that
+		query("input", this.domNode).forEach(function(node){
+			registry.byNode(node).set("readOnly", !edit);
+		});
+		// in edit mode change the label and params of the edit button
+		this.editButton.set("label", edit?this.nls.ok:this.nls.edit);
+		// put a listener to save the form when we are editing if there is no
+		if(!this._onHandler && edit){
+			this._onHandler = this.editButton.on("click", lang.hitch(this, this._saveForm));
+		}else if(this._onHandler && !edit){
+			this._onHandler.remove();
+			this._onHandler = null;
+		}
+		var editButtonOptions = this.editButton.transitionOptions;
+		editButtonOptions.params.edit = !edit;
+		// also update the edit & ok button to reference the currently displayed item
+		editButtonOptions.params.id = id;
+		var cancelButtonOptions = this.cancelButton.transitionOptions;
+		if(create){
+			// if we cancel we want to go back to main view
+			cancelButtonOptions.target = "list";
+			if(cancelButtonOptions.params.id){
+				delete cancelButtonOptions.params.id;
+			}
+		}else{
+			cancelButtonOptions.target = "details";
+			cancelButtonOptions.params.id = id;
+		}
+		// hide back button in edit mode
+		if(edit){
+			domClass.add(this.backButton.domNode, "hidden");
+		}else{
+			domClass.remove(this.backButton.domNode, "hidden");
+		}
+		// cancel button must be shown in edit mode only,
+		// same for delete button if we are not creating a new contact
+		this.cancelButton.domNode.style.display = edit?"":"none";
+		this.deleteButton.domNode.style.display = (edit&&(typeof id !== "undefined"))?"":"none";
+		:	:	:
+	},
+	:	:	:
+</pre>
+
+<p>The <strong>"details" view controller</strong> also handles the following:</p>
+<ul>
 	<li>Support to <strong>Cancel</strong> or <strong>Save</strong> updates, and to <strong>Create</strong> a new
 		contact when saving one that was added.</li>
 	<li>Support to transition back to the <strong>List</strong> view when a contact is <strong>deleted</strong>.</li>
 </ul>
 
-<pre class="brush: js; html-script: true;">
-	define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
-		"dojo/Deferred", "dojo/query", "dojo/dom-class","dijit/registry",
-		"dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
-		function(array, lang, has, when, Deferred, query, domClass, registry){
-
-		var DATA_MAPPING = {
-			"phonehome": "phoneNumbers.home",
-			"phonework": "phoneNumbers.work",
-			"mailhome": "emails.home",
-			"mailwork": "emails.work"
-		};
-
-		var getStoreField = function(arr, type){
-			var index = array.indexOf(arr, function(item){
-				return (item.type == type);
-			});
-			if(index == -1){
-				// create one
-				arr.push({
-					type: type
-				});
-				index = arr.length - 1;
-			}
-			return arr[index];
-		};
-
-		return {
-			beforeActivate: function(){
-				// in case we are still under saving previous modifications, let's wait for
-				// the operation to be completed as use resulting contact as input
-				var view = this;
-				when(view._savePromise, function(contact){
-					view._savePromise = null;
-					view._beforeActivate(contact);
-				});
-			},
-			_beforeActivate: function(contact){
-				// get the id of the displayed contact from the params if we don't have a contact
-				// or from the contact if we have one
-				if(contact){
-					this.params.id = contact.id;
-				}
-				var id = this.params.id;
-
-				// are we in edit mode or not? if we are we need to slightly update the view for that
-				var edit = this.params.edit;
-				// are we in create mode
-				var create = (typeof id === "undefined");
-				// change widgets readonly value based on that
-				query("input", this.domNode).forEach(function(node){
-					registry.byNode(node).set("readOnly", !edit);
-				});
-				// in edit mode change the label and params of the edit button
-				this.editButton.set("label", edit?this.nls.ok:this.nls.edit);
-				// put a listener to save the form when we are editing if there is no
-				if(!this._onHandler && edit){
-					this._onHandler = this.editButton.on("click", lang.hitch(this, this._saveForm));
-				}else if(this._onHandler && !edit){
-					this._onHandler.remove();
-					this._onHandler = null;
-				}
-				var editButtonOptions = this.editButton.transitionOptions;
-				editButtonOptions.params.edit = !edit;
-				// also update the edit & ok button to reference the currently displayed item
-				editButtonOptions.params.id = id;
-				var cancelButtonOptions = this.cancelButton.transitionOptions;
-				if(create){
-					// if we cancel we want to go back to main view
-					cancelButtonOptions.target = "list";
-					if(cancelButtonOptions.params.id){
-						delete cancelButtonOptions.params.id;
-					}
-				}else{
-					cancelButtonOptions.target = "details";
-					cancelButtonOptions.params.id = id;
-				}
-				// hide back button in edit mode
-				if(edit){
-					domClass.add(this.backButton.domNode, "hidden");
-				}else{
-					domClass.remove(this.backButton.domNode, "hidden");
-				}
-				// cancel button must be shown in edit mode only,
-				// same for delete button if we are not creating a new contact
-				this.cancelButton.domNode.style.display = edit?"":"none";
-				this.deleteButton.domNode.style.display = (edit&&(typeof id !== "undefined"))?"":"none";
-
-				// let's fill the form with the currently selected contact
-				// if nothing selected skip that part
-				var view = this;
-				var promise = null;
-				if(!create && !contact){
-					id = id.toString();
-					// get the contact on the store
-					promise = this.loadedStores.contacts.get(id);
-				}else{
-					promise = contact;
-				}
+<pre class="brush: js; html-script: true; highlight: [11,13,15,16,4,21,31,32,33,36,43,44,48,49,55,57,64,69,72]">
+	:	:	:
+	return {
+		:	:	:
+		_saveForm: function(){
+			var id = this.params.id, view = this;
+			view._savePromise = new Deferred();
+			if(typeof id === "undefined"){
+				view._createContact();
+			}else{
+				// get the contact on the store
+				var promise = this.loadedStores.contacts.get(id.toString());
 				when(promise, function(contact){
-					view.firstname.set("value", contact ? contact.name.givenName : null);
-					view.lastname.set("value", contact ? contact.name.familyName : null);
-					if(contact && contact.organizations && contact.organizations.length){
-						view.company.set("value", contact.organizations[0].name);
-					}else{
-						view.company.set("value", null);
-					}
-					// reset binding fields
-					for(var key in DATA_MAPPING){
-						view[key].set("value", null);
-					}
-					if(contact){
-						// set each phone number to the corresponding form field
-						array.forEach(contact.phoneNumbers, function(number){
-							// TODO deal with case where we don't support a particular field
-							view["phone"+number.type].set("value",  number.value);
-						});
-						// set each mail field to the corresponding form field
-						array.forEach(contact.emails, function(mail){
-							// TODO deal with case where we don't support a particular field
-							view["mail"+mail.type].set("value",  mail.value);
-						});
-					}
-				});
-			},
-			_saveForm: function(){
-				var id = this.params.id, view = this;
-				view._savePromise = new Deferred();
-				if(typeof id === "undefined"){
-					view._createContact();
-				}else{
-					// get the contact on the store
-					var promise = this.loadedStores.contacts.get(id.toString());
-					when(promise, function(contact){
-						view._saveContact(contact);
-						// save the updated item into the store
-						when(view.loadedStores.contacts.put(contact), function(contact){
-							view._savePromise.resolve(contact);
-						});
+					view._saveContact(contact);
+					// save the updated item into the store
+					when(view.loadedStores.contacts.put(contact), function(contact){
+						view._savePromise.resolve(contact);
 					});
-				}
-			},
-			_createContact: function(){
-				var contact = {
-					"id": (Math.round(Math.random()*1000000)).toString(),
-					"name": {},
-					"displayName": "",
-					"phoneNumbers": [],
-					"emails": [],
-					"organizations": []
-				};
-				var view = this;
-				this._saveContact(contact);
-				when(this.loadedStores.contacts.add(contact), function(contact){
-					view._savePromise.resolve(contact);
 				});
-			},
-			_saveContact: function(contact){
-				// set back the values on the contact object
-				var value, keys;
-				// deal with name first
-				var displayName = "";
-				value = this.firstname.get("value");
-				if(typeof value !== "undefined"){
-					contact.name.givenName = value;
-					displayName += value;
-				}
-				value = this.lastname.get("value");
-				if(typeof value !== "undefined"){
-					contact.name.familyName = value;
-					displayName += " " + value;
-				}
-				contact.displayName = displayName;
-				value = this.company.get("value");
-				if(typeof value !== "undefined"){
-					if(contact.organizations.length == 0){
-						contact.organizations.push({});
-					}
-					contact.organizations[0].name = value;
-				}
-				for(var key in DATA_MAPPING){
-					value = this[key].get("value");
-					if(typeof value !== "undefined"){
-						// there is a value, save it
-						keys = DATA_MAPPING[key].split(".");
-						getStoreField(contact[keys[0]], keys[1]).value = value;
-					}
-					// TODO remove existing value?
-				}
-			},
-			_deleteContact: function(){
-				this.loadedStores.contacts.remove(this.params.id.toString());
-				// we want to be back to list
-				this.app.transitionToView(this.domNode, { target: "list" });
 			}
+		},
+		_createContact: function(){
+			var contact = {
+				"id": (Math.round(Math.random()*1000000)).toString(),
+				"name": {},
+				"displayName": "",
+				"phoneNumbers": [],
+				"emails": [],
+				"organizations": []
+			};
+			var view = this;
+			this._saveContact(contact);
+			when(this.loadedStores.contacts.add(contact), function(contact){
+				view._savePromise.resolve(contact);
+			});
+		},
+		_saveContact: function(contact){
+			// set back the values on the contact object
+			var value, keys;
+			// deal with name first
+			var displayName = "";
+			value = this.firstname.get("value");
+			if(typeof value !== "undefined"){
+				contact.name.givenName = value;
+				displayName += value;
+			}
+			value = this.lastname.get("value");
+			if(typeof value !== "undefined"){
+				contact.name.familyName = value;
+				displayName += " " + value;
+			}
+			contact.displayName = displayName;
+			value = this.company.get("value");
+			if(typeof value !== "undefined"){
+				if(contact.organizations.length == 0){
+					contact.organizations.push({});
+				}
+				contact.organizations[0].name = value;
+			}
+			for(var key in DATA_MAPPING){
+				value = this[key].get("value");
+				if(typeof value !== "undefined"){
+					// there is a value, save it
+					keys = DATA_MAPPING[key].split(".");
+					getStoreField(contact[keys[0]], keys[1]).value = value;
+				}
+				// TODO remove existing value?
+			}
+		},
+		_deleteContact: function(){
+			this.loadedStores.contacts.remove(this.params.id.toString());
+			// we want to be back to list
+			this.app.transitionToView(this.domNode, { target: "list" });
 		}
-	});
+	}
 </pre>
 
 
@@ -872,22 +878,22 @@
 		// relative to this file
 		basePath: "../..",
 		// relative to base path
-		releaseDir: "./contactsApp-release",
+		releaseDir: "./contactsAppFull-release",
 		action: "release",
 		cssOptimize: "comments",
 		mini: true,
 		packages:[{
 			name: "dojo",
-			location: "./dojo"
+			location: "{pathToDojo}/dojo"
 		},{
 			name: "dijit",
-			location: "./dijit"
+			location: "{pathToDijit}/dijit"
 		},{
-			name: "contactsApp",
-			location: "./contactsApp"
+			name: "contactsAppFull",
+			location: "./contactsAppFull"
 		},{
 			name: "dojox",
-			location: "./dojox"
+			location: "{pathToDojox}/dojox"
 		}],
 		selectorEngine: "acme",
 		layers: {
@@ -895,17 +901,17 @@
 				boot: true,
 				customBase: true
 			},
-			"contactsApp/contacts": {
-				include: ["contactsApp/contacts"]
+			"contactsAppFull/contacts": {
+				include: ["contactsAppFull/contacts"]
 			}
 		}
 	};
 </pre>
 <p>The command you would run to <strong>build</strong> your application would look like this:</p>
 <pre class="brush: js; html-script: true;">
-	./build.sh --profile ../../contactsApp/build/build.profile.js  
-		--appConfigFile ../../contactsApp/contacts.json 
-		--appConfigLayer=contactsApp/contacts
+	./build.sh --profile {pathToApp}contactsAppFull/build/build.profile.js
+		--appConfigFile {pathToApp}contactsAppFull/contacts.json
+		--appConfigLayer=contactsAppFull/contacts
 </pre>
 
 <p>By default the extension uses the only layer in the profile to bundle all the modules for the application.
