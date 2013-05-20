@@ -76,8 +76,10 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 			// hide back button in edit mode
 			if(edit){
 				domClass.add(this.backButton.domNode, "hidden");
+				domClass.remove(this.formLayout.domNode, "mblFormLayoutReadOnly");
 			}else{
 				domClass.remove(this.backButton.domNode, "hidden");
+				domClass.add(this.formLayout.domNode, "mblFormLayoutReadOnly");
 			}
 			// cancel button must be shown in edit mode only, same for delete button if we are not creating a new contact
 			this.cancelButton.domNode.style.display = edit?"":"none";
@@ -109,14 +111,24 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 				if(contact){
 					// set each phone number to the corresponding form field
 					array.forEach(contact.phoneNumbers, function(number){
-						// TODO deal with case where we don't support a particular field
-						view["phone"+number.type].set("value",  number.value);
+						// TODO for now we just skip non supported fields, ideally we should have a generic mechanism to deal with them
+						var phonekey = "phone"+number.type;
+						if(view[phonekey]){
+							view[phonekey].set("value",  number.value);
+						}
 					});
 					// set each mail field to the corresponding form field
 					array.forEach(contact.emails, function(mail){
-						// TODO deal with case where we don't support a particular field
-						view["mail"+mail.type].set("value",  mail.value);
+						// TODO for now we just skip non supported fields, ideally we should have a generic mechanism to deal with them
+						var mailkey = "mail"+mail.type;
+						if(view[mailkey]){
+							view[mailkey].set("value",  mail.value);
+						}
 					});
+					// hide empty fields when not in edit mode
+					if(!edit){
+						view._hideEmptyFields(view);
+					}
 				}
 			});
 		},
@@ -131,8 +143,9 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 				when(promise, function(contact){
 					view._saveContact(contact);
 					// save the updated item into the store
-					when(view.loadedStores.contacts.put(contact), function(contact){
-						view._savePromise.resolve(contact);
+					when(view.loadedStores.contacts.put(contact), function(savedContact){
+						// some store do return a contact some other an ID
+						view._savePromise.resolve(savedContact == id ? contact:savedContact);
 					});
 				});
 			}
@@ -148,8 +161,9 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 			};
 			var view = this;
 			this._saveContact(contact);
-			when(this.loadedStores.contacts.add(contact), function(contact){
-				view._savePromise.resolve(contact);
+			when(this.loadedStores.contacts.add(contact), function(savedContact){
+				// some store do return a contact some other an ID
+				view._savePromise.resolve(savedContact == contact.id ? contact : savedContact);
 			});
 		},
 		_saveContact: function(contact){
@@ -170,7 +184,9 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 			contact.displayName = displayName;
 			value = this.company.get("value");
 			if(typeof value !== "undefined"){
-				if(contact.organizations.length == 0){
+				if(!contact.organizations){
+					contact.organizations = [{}];
+				}else if(contact.organizations.length == 0){
 					contact.organizations.push({});
 				}
 				contact.organizations[0].name = value;
@@ -180,15 +196,32 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when", "dojo/De
 				if(typeof value !== "undefined"){
 					// there is a value, save it
 					keys = DATA_MAPPING[key].split(".");
+					if(contact[keys[0]] == null){
+						contact[keys[0]] = [];
+					}
 					getStoreField(contact[keys[0]], keys[1]).value = value;
 				}
 				// TODO remove existing value?
 			}
 		},
+		_hideEmptyFields: function(view){
+			query(".readOnlyHidden", view.formLayout.domNode).forEach(function(node){
+				domClass.remove(node, "readOnlyHidden");
+			});
+			query("input", view.formLayout.domNode).forEach(function(node){
+				var val = registry.byNode(node).get("value");
+				if(!val && node.parentNode.parentNode && node.id !== "firstname" && node.id !== "lastname"){
+					domClass.add(node.parentNode.parentNode, "readOnlyHidden");
+				}
+			});
+
+		},
 		_deleteContact: function(){
-			this.loadedStores.contacts.remove(this.params.id.toString());
-			// we want to be back to list
-			this.app.transitionToView(this.domNode, { target: "list" });
+			var view = this;
+			when(this.loadedStores.contacts.remove(this.params.id.toString()), function(){
+				// we want to be back to list
+				view.app.transitionToView(view.domNode, { target: "list" });
+			});
 		}
 	}
 });

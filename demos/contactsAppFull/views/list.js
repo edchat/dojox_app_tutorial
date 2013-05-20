@@ -20,6 +20,16 @@ define(["dojo/_base/declare", "dojo/_base/array", "dojo/has", "dojox/mobile/List
 		ContactListItem: ContactListItem,
 		init: function(){
 			var view = this;
+			if(has("cordova")){
+				this.contacts.on("complete", function(){
+					view._completed = true;
+					// we force back activation now that the list has been completed
+			   	 view.beforeActivate();
+				});
+			}else{
+				view._completed = true;
+			}
+
 			this.contacts.on("add", function(item){
 				// select the newly added element
 				if(!has("phone")){
@@ -36,13 +46,13 @@ define(["dojo/_base/declare", "dojo/_base/array", "dojo/has", "dojox/mobile/List
 			});
 		},
 		beforeActivate: function(){
-			// in tablet we want one to be selected at init
-			if(!has("phone")){
+			// in tablet we want one to be selected each time but list must be completed for that
+			if(!has("phone") && this._completed){
 				// check if something is selected
 				var selected = array.some(this.contacts.getChildren(), function(child){
 					return child.get("selected");
 				});
-				if(!selected){
+				if(!selected && this.contacts.getChildren().length > 0){
 					var item = this.contacts.getChildren()[0];
 					this.contacts.selectItem(item);
 					// transition

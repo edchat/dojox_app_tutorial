@@ -78,7 +78,7 @@
  &lt;/script&gt;
 </pre>
 
-<p>Dojo must be loaded, for this tutorial we use a php util to load the correct dojo, but normally it would look like this:</p>
+<p>Dojo must be loaded, for this tutorial we use a php util like this Utils::printDojoScript(); to load the correct dojo, but normally it would look like this:</p>
 <pre class="brush: js; html-script: true;">
 &lt;script type="text/javascript"  
 		src="{path-to-dojo}/dojo/dojo.js" data-dojo-config= "async: true"&gt;
@@ -230,7 +230,7 @@
 </pre>
 
 <a class="demoBtn demo" href="demos/contactsList/contacts.php" target="_blank">Run the contactsList App</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsList">View the contactsList App source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app/tree/master/demos/contactsList">View the contactsList App source on github</a>
 
 
 <h3 id="contactsAppBaseAddDetails">For <strong>(contactsAppBase)</strong> we will add the <strong>Details view</strong></h3>
@@ -303,7 +303,8 @@
 
 <p>The (contacts.css) <strong>application CSS</strong> file includes a media query with a min-width of 501px,
 	so that on a tablet/desktop sized screen the .leftpane will only be set with a width of 250px with a border on the right,
-	and the .backButton will be hidden. The CSS file looks like this:</p>
+	and the .backButton will be hidden. There is also css related to the mblFormLayout and the input fields.
+	The CSS file looks like this:</p>
 <pre class="brush: js; html-script: true; highlight: [1,3,4,8]">
 	@media screen and (min-width: 501px) {
 	  	.leftpanel {
@@ -317,7 +318,33 @@
 	}
 
 	.hidden {
-		display: none;
+		display: none !important;
+	}
+
+	.mblFormLayout {
+		margin: 8px;
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	.mblFormLayout > * > *:first-child {
+		font-weight: normal;
+		color: gray;
+	}
+
+	.mblFormLayoutReadOnly .readOnlyHidden {
+		display: none !important;
+	}
+
+	.mblFormLayoutReadOnly .mblTextArea {
+		background-color: rgba(0, 0, 0, 0);
+		border-width: 0px;
+	}
+	.android_theme .mblFormLayoutReadOnly .mblTextArea {
+		background-color: #d3d3d3;
+	}
+
+	.mblFormLayout .mblTextArea {
+		font-weight: bold;
 	}
 </pre>
 <p class="proTip">If changes are made to the min-width in the media query, those changes would also have to be made
@@ -491,13 +518,13 @@
 				});
 			},
 			beforeActivate: function(){
-				// in tablet we want one to be selected at init
-				if(!has("phone")){
+				// in tablet we want one to be selected each time but list must be completed for that
+				if(!has("phone") && this._completed){
 					// check if something is selected
 					var selected = array.some(this.contacts.getChildren(), function(child){
 						return child.get("selected");
 					});
-					if(!selected){
+					if(!selected && this.contacts.getChildren().length > 0){
 						var item = this.contacts.getChildren()[0];
 						this.contacts.selectItem(item);
 						// transition
@@ -562,11 +589,12 @@
 	</ul>
 </ul>
 
-<pre class="brush: html; highlight: [8,12,21,30]">
+<pre class="brush: html; highlight: [9,13,22,31]">
 	&lt;div&gt;
 	:	:	:
 	&lt;div data-dojo-type="dojox/mobile/ScrollableView"&gt;
-			&lt;div data-dojo-type="dojox/mobile/FormLayout"&gt;
+			&lt;div data-dojo-type="dojox/mobile/FormLayout"
+					data-dojo-attach-point="formLayout"&gt;
 				&lt;div&gt;
 					&lt;label for="firstname"&gt;${nls.name}&lt;/label&gt;
 					&lt;fieldset&gt;
@@ -585,7 +613,7 @@
 					&lt;fieldset&gt;
 						&lt;input id="company" name="company"
 								data-dojo-type="dojox/mobile/TextArea"
-								data-dojo-props="readOnly: true"
+								data-dojo-props="readOnly: true, placeHolder: '${nls.company}'"
 								data-dojo-attach-point="company"&gt;
 					&lt;/fieldset&gt;
 				&lt;/div&gt;
@@ -606,9 +634,10 @@
 <p>The <strong>"details" view controller</strong> (details.js) handles the following:</p>
 <ul>
 	<li>Initializing the form with the values from the selected contact from the store using the loadedStores property.</li>
+	<li>Hide form fields without a value set when in View Mode.</li>
 </ul>
 
-	<pre class="brush: js; html-script: true; highlight: [41,43,53,55,58,59,61,73,78]">
+	<pre class="brush: js; html-script: true; highlight: [41,43,53,55,58,59,61,75,83, 87, 88]">
 		define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
 			"dojo/Deferred", "dojo/query", "dojo/dom-class","dijit/registry",
 			"dojox/mobile/Button", "dojox/mobile/FormLayout", "dojox/mobile/TextArea"],
@@ -680,14 +709,24 @@
 						if(contact){
 							// set each phone number to the corresponding form field
 							array.forEach(contact.phoneNumbers, function(number){
-								// TODO deal with case where we don't support a particular field
-								view["phone"+number.type].set("value",  number.value);
+								// TODO for now we just skip non supported fields, ideally we should have a generic mechanism to deal with them
+								var phonekey = "phone"+number.type;
+								if(view[phonekey]){
+									view[phonekey].set("value",  number.value);
+								}
 							});
 							// set each mail field to the corresponding form field
 							array.forEach(contact.emails, function(mail){
-								// TODO deal with case where we don't support a particular field
-								view["mail"+mail.type].set("value",  mail.value);
+								// TODO for now we just skip non supported fields, ideally we should have a generic mechanism to deal with them
+								var mailkey = "mail"+mail.type;
+								if(view[mailkey]){
+									view[mailkey].set("value",  mail.value);
+								}
 							});
+							// hide empty fields when not in edit mode
+							if(!edit){
+								view._hideEmptyFields(view);
+							}
 						}
 					});
 				},
@@ -764,7 +803,7 @@
 	<li>Support to transition back to the <strong>List</strong> view when a contact is <strong>deleted</strong>.</li>
 </ul>
 
-<pre class="brush: js; html-script: true; highlight: [11,13,15,16,4,21,31,32,33,36,43,44,48,49,55,57,64,69,72]">
+<pre class="brush: js; html-script: true; highlight: [11,13,15,16,4,21,31,32,33,36,43,44,48,49,55,57,64,69,71,73]">
 	:	:	:
 	return {
 		:	:	:
@@ -818,7 +857,9 @@
 			contact.displayName = displayName;
 			value = this.company.get("value");
 			if(typeof value !== "undefined"){
-				if(contact.organizations.length == 0){
+				if(!contact.organizations){
+					contact.organizations = [{}];
+				}else if(contact.organizations.length == 0){
 					contact.organizations.push({});
 				}
 				contact.organizations[0].name = value;
@@ -828,22 +869,39 @@
 				if(typeof value !== "undefined"){
 					// there is a value, save it
 					keys = DATA_MAPPING[key].split(".");
+					if(contact[keys[0]] == null){
+						contact[keys[0]] = [];
+					}
 					getStoreField(contact[keys[0]], keys[1]).value = value;
 				}
 				// TODO remove existing value?
 			}
 		},
+		_hideEmptyFields: function(view){
+			query(".readOnlyHidden", view.formLayout.domNode).forEach(function(node){
+				domClass.remove(node, "readOnlyHidden");
+			});
+			query("input", view.formLayout.domNode).forEach(function(node){
+				var val = registry.byNode(node).get("value");
+				if(!val && node.parentNode.parentNode && node.id !== "firstname" && node.id !== "lastname"){
+					domClass.add(node.parentNode.parentNode, "readOnlyHidden");
+				}
+			});
+
+		},
 		_deleteContact: function(){
-			this.loadedStores.contacts.remove(this.params.id.toString());
-			// we want to be back to list
-			this.app.transitionToView(this.domNode, { target: "list" });
+			var view = this;
+			when(this.loadedStores.contacts.remove(this.params.id.toString()), function(){
+				// we want to be back to list
+				view.app.transitionToView(view.domNode, { target: "list" });
+			});
 		}
 	}
 </pre>
 
 
 <a class="demoBtn demo" href="demos/contactsAppBase/contacts.php" target="_blank">Run the contactsAppBase</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppBase">View the contactsAppBase source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app/tree/master/demos/contactsAppBase">View the contactsAppBase source on github</a>
 
 
 <h3 id="updatejsoncordova">For <strong>(contactsAppFull)</strong> we will update the Contacts Application to support
@@ -946,6 +1004,40 @@
 </pre>
 
 
+<h3 id="updateindexcordova">For cordova you will need to setup an idex.html file, and build the app for cordova.</h3>
+<p>This index.html file was setup to work with <strong>cordova</strong>.</p>
+<pre class="brush: js; html-script: true; highlight: [9,10,11,12,15]">
+	&lt;!DOCTYPE html&gt;
+	&lt;html&gt;
+	    &lt;head&gt;
+	        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+	        &lt;meta name="format-detection" content="telephone=no" /&gt;
+	        &lt;meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1,
+				minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /&gt;
+	        &lt;title&gt;Contacts App&lt;/title&gt;
+	        &lt;link rel="stylesheet" href="{path_to_contactsApp}/contactsApp/contacts.css"&gt;
+	    	&lt;script type="text/javascript" src="{path_to_dojox}/dojox/mobile/deviceTheme.js"&gt;&lt;/script&gt;
+	        &lt;script type="text/javascript" src="cordova-2.7.0.js"&gt;&lt;/script&gt;
+	        &lt;script type="text/javascript" src="{path_to_dojo}/dojo/dojo.js"
+											data-dojo-config="app: {debugApp: 1}, async: true"&gt;&lt;/script&gt;
+			&lt;script type="text/javascript"&gt;
+	            require(["contactsApp/contacts"]);
+			&lt;/script&gt;
+	    &lt;/head&gt;
+	    &lt;body&gt;
+	    &lt;/body&gt;
+	&lt;/html&gt;
+</pre>
+
+<p>We can not run in cordova a part of this demo, you will need to install cordova and build the app to run on cordova.
+	See <a href="http://docs.phonegap.com/en/2.7.0/guide_getting-started_index.md.html#Getting%20Started%20Guides" target="_blank">The Cordova/Phone Gap Getting Started Guides</a> for more details.
+	You can see how the <strong>has</strong> checking allows you to run the same code on a browser.</p>
+
+
+<a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">Run the Full Contacts App Demo</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppFull">View the contactsAppFull source on github</a>
+
+
 <h3 id="buildApp">Building an Application</h3>
 
 <p>In order to help you <strong>build</strong> your application from the configuration file dojox/app provides extensions
@@ -964,16 +1056,16 @@
 		mini: true,
 		packages:[{
 			name: "dojo",
-			location: "{pathToDojo}/dojo"
+			location: "{path-to-dojo}/dojo"
 		},{
 			name: "dijit",
-			location: "{pathToDijit}/dijit"
+			location: "{path-to-dijit}/dijit"
 		},{
 			name: "contactsAppFull",
 			location: "./contactsAppFull"
 		},{
 			name: "dojox",
-			location: "{pathToDojox}/dojox"
+			location: "{path-to-dojox}/dojox"
 		}],
 		selectorEngine: "acme",
 		layers: {
@@ -1003,9 +1095,6 @@
 	In that case you might not want to load everything upfront. In this case the controller file of each view will be
 	used as the layer for the view.</p>
 
-
-<a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">Run the Full Contacts App Demo</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppFull">View the contactsAppFull source on github</a>
 
 
 <h3 id="createAppTips">Tips for creating an Application</h3>

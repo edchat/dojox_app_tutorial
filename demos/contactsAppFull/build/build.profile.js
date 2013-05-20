@@ -11,16 +11,16 @@ var profile = {
 	mini: true,
 	packages:[{
 		name: "dojo",
-		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dojo"
+		location: "{path-to-dojo}/dojo"
 	},{
 		name: "dijit",
-		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dijit"
+		location: "{path-to-dijit}/dijit"
 	},{
 		name: "contactsAppFull",
 		location: "./contactsAppFull"
 	},{
 		name: "dojox",
-		location: "/Users/edchat/Documents/htdocsDevelopment/aptanaWorkSpace/dojo19WS4/dojox"
+		location: "{path-to-dojox}/dojox"
 	}],
 	selectorEngine: "acme",
 	layers: {
