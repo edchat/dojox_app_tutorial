@@ -230,7 +230,7 @@
 </pre>
 
 <a class="demoBtn demo" href="demos/contactsList/contacts.php" target="_blank">Run the contactsList App</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app/tree/master/demos/contactsList">View the contactsList App source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsList" target="_blank">View the contactsList App source on github</a>
 
 
 <h3 id="contactsAppBaseAddDetails">For <strong>(contactsAppBase)</strong> we will add the <strong>Details view</strong></h3>
@@ -901,7 +901,7 @@
 
 
 <a class="demoBtn demo" href="demos/contactsAppBase/contacts.php" target="_blank">Run the contactsAppBase</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app/tree/master/demos/contactsAppBase">View the contactsAppBase source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppBase" target="_blank">View the contactsAppBase source on github</a>
 
 
 <h3 id="updatejsoncordova">For <strong>(contactsAppFull)</strong> we will update the Contacts Application to support
@@ -1035,7 +1035,7 @@
 
 
 <a class="demoBtn demo" href="demos/contactsAppFull/contacts.php" target="_blank">Run the Full Contacts App Demo</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppFull">View the contactsAppFull source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppFull" target="_blank">View the contactsAppFull source on github</a>
 
 
 <h3 id="buildApp">Building an Application</h3>
@@ -1113,6 +1113,8 @@
 
 <h3>Conclusion</h3>
 
-<p>In this tutorial, we've learned how to build a Contacts Application with dojox/app.  To see the code used for this
-Contacts application go to: <a href="https://github.com/cjolif/dojo-contacts-app">https://github.com/cjolif/dojo-contacts-app</a></p>
+<p>In this tutorial, we've learned how to build a Contacts Application with dojox/app.  We have been looking at the code
+used for the demos in the github project used for this tutorial, but if you want to run the code yourself, you will want to
+use this github project:
+<a href="https://github.com/cjolif/dojo-contacts-app">https://github.com/cjolif/dojo-contacts-app</a></p>
 
