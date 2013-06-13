@@ -73,21 +73,19 @@
 
 <p>The Dojo mobile CSS (if using Dojo Mobile):</p>
 <pre class="brush: js; html-script: true;">
-&lt;script type="text/javascript"  
-	src="{path-to-dojox}/dojox/mobile/deviceTheme.js"&gt;
+&lt;script src="{path-to-dojox}/dojox/mobile/deviceTheme.js"&gt;
  &lt;/script&gt;
 </pre>
 
 <p>Dojo must be loaded, for this tutorial we use a php util like this Utils::printDojoScript(); to load the correct dojo, but normally it would look like this:</p>
 <pre class="brush: js; html-script: true;">
-&lt;script type="text/javascript"  
-		src="{path-to-dojo}/dojo/dojo.js" data-dojo-config= "async: true"&gt;
+&lt;script src="{path-to-dojo}/dojo/dojo.js" data-dojo-config= "async: true"&gt;
  &lt;/script&gt;
 </pre>
 
 <p>As well as your main application (AMD) module:</p>
 <pre class="brush: js; html-script: true;">
-&lt;script type="text/javascript"&gt;
+&lt;script&gt
 	require(["contactsList/contacts"]);
  &lt;/script&gt;
 </pre>
@@ -1016,11 +1014,11 @@
 				minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /&gt;
 	        &lt;title&gt;Contacts App&lt;/title&gt;
 	        &lt;link rel="stylesheet" href="{path_to_contactsApp}/contactsApp/contacts.css"&gt;
-	    	&lt;script type="text/javascript" src="{path_to_dojox}/dojox/mobile/deviceTheme.js"&gt;&lt;/script&gt;
-	        &lt;script type="text/javascript" src="cordova-2.7.0.js"&gt;&lt;/script&gt;
-	        &lt;script type="text/javascript" src="{path_to_dojo}/dojo/dojo.js"
+	    	&lt;script src="{path_to_dojox}/dojox/mobile/deviceTheme.js"&gt;&lt;/script&gt;
+	        &lt;script src="cordova-2.7.0.js"&gt;&lt;/script&gt;
+	        &lt;script src="{path_to_dojo}/dojo/dojo.js"
 											data-dojo-config="app: {debugApp: 1}, async: true"&gt;&lt;/script&gt;
-			&lt;script type="text/javascript"&gt;
+			&lt;script&gt
 	            require(["contactsApp/contacts"]);
 			&lt;/script&gt;
 	    &lt;/head&gt;

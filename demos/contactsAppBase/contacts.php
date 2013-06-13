@@ -10,7 +10,7 @@
 		<?php
 			include_once($_SERVER['DOCUMENT_ROOT'] . implode('/', array_slice(explode('/', dirname($_SERVER['PHP_SELF'])), 0, 4)) . '/Utils.php');
 		?>
-		<script type="text/javascript" src="/js/dojo/1.9/dojox/mobile/deviceTheme.js"></script>
+		<script src="/js/dojo/1.9/dojox/mobile/deviceTheme.js"></script>
 	</head>
 	<body>
 		<script>
@@ -30,7 +30,7 @@
 			Utils::printDojoScript();
 		?>
 
-		<script type="text/javascript">
+		<script>
 			require(["contactsAppBase/contacts"]);
 		</script>
 
