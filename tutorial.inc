@@ -212,15 +212,17 @@
 <p>The <strong>"list" view controller</strong> (list.js) includes:</p>
 <ul>
 	<li>The <strong>init</strong> function which is called when the controller is loaded the first time which will simply
-		use <strong>on</strong> to watch for clicks in the list, and use alert to indicate which item was clicked.</li>
+		use <strong>on</strong> to watch for clicks in the list, and use dom.byId and innerHTML to set the text to indicate which item was clicked.</li>
 </ul>
 <pre class="brush: js; html-script: true; highlight: [5,6]">
-	define(["dojox/mobile/EdgeToEdgeStoreList", "dojox/mobile/FilteredListMixin"],
+	define(["dojox/mobile/EdgeToEdgeStoreList",
+			"dojox/mobile/FilteredListMixin"],
 		function(){
 		return {
 			init: function(){
 				this.contacts.on("click", function(e){
-					alert(e.target.innerHTML + ": was clicked.");
+					dom.byId("selectionMade").innerHTML =
+									e.target.innerHTML + ": was clicked.";
 				});
 			}
 		};
