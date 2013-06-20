@@ -237,7 +237,7 @@ to use different sections of configuration based on the targeted platform or oth
 </pre>
 
 <a class="demoBtn demo" href="demos/contactsList/contacts.php" target="_blank">Run the Contacts List Application App</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsList" target="_blank">View the Contacts List Application source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/contactsList/demos/contactsList" target="_blank">View the Contacts List Application source on github</a>
 
 <h3>Conclusion</h3>
 

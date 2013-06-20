@@ -716,7 +716,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
 
 
 <a class="demoBtn demo" href="demos/contactsAppPhone/contacts.php" target="_blank">Run the Contacts Application</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppBase" target="_blank">View the contactsAppPhone source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/contactsPhone/demos/contactsAppPhone" target="_blank">View the contactsAppPhone source on github</a>
 
 <h3>Conclusion</h3>
 
