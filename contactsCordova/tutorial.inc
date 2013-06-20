@@ -196,7 +196,7 @@
 
 
 <a class="demoBtn demo" href="demos/contactsApp/contacts.php" target="_blank">Run the Contacts Application Demo</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsApp" target="_blank">View the contactsApp source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/contactsCordova/demos/contactsApp" target="_blank">View the contactsApp source on github</a>
 
 
 

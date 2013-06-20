@@ -214,7 +214,7 @@ application to have it use a two column layout on a tablet.  These updates are n
 <p>The "details" view does not require any changes to move from a phone form factor to a tablet form factor.</p>
 
 <a class="demoBtn demo" href="demos/contactsAppTablet/contacts.php" target="_blank">Run the Contacts Application</a>
-<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/demos/contactsAppBase" target="_blank">View the contactsAppTablet source on github</a>
+<a class="demoBtn demo" href="https://github.com/edchat/dojox_app_tutorial/tree/master/contactsTablet/demos/contactsAppTablet" target="_blank">View the contactsAppTablet source on github</a>
 
 <h3>Conclusion</h3>
 
