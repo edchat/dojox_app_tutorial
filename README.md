@@ -12,7 +12,7 @@ All contributions require a [Dojo Foundation CLA](http://dojofoundation.org/abou
 
 * Manual installation by dropping dojox_app_tutorial into the documentation/tutorials/1.9 directory as a sibling of the other dojo 1.9 tutorials:
 
- To install the latest master, go to the root Dojo installation directory and clone contactsApp from github
+ To install the latest master, go to the root documentation/tutorials/1.9 directory in the Dojo documentation installation and clone dojox_app_tutorial from github
 
- git clone git://github.com/edchat/dojox_app_tutorial dojox_app_tutorial
+ git clone git://github.com/edchat/dojox_app_tutorial dojox_app
 
