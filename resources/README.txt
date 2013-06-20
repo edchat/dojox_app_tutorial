@@ -1,1 +1,0 @@
-This is where any static files needed for your demo go. This means things like json data files or other supporting files other than images and css.
