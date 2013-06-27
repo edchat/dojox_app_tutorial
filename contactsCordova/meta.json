@@ -1,5 +1,5 @@
 {
-	"title": "Building an application and updating the Contacts Application to use Cordova/PhoneGap for access to the contacts on a device.",
+	"title": "Updating the Contacts Application to use Cordova/PhoneGap for access to the contacts on a device, and building an application.",
 	"author": "ed_chatelain",
 	"dojoVersion": "1.9",
 	"difficulty": "Intermediate",
