@@ -2,15 +2,22 @@
 
 <h3>About dojox/app</h3>
 
-<p><strong>dojox/app</strong> is an extensible, configuration based, Application framework which is built on Dojo.
+<p><strong>dojox/app</strong> is an extensible, configuration based, application framework which is built on Dojo.
 <strong>dojox/app</strong> helps application developers create applications more quickly, increases maintainability and
 	reduces coding effort by providing:</p>
 <ul>
-	<li>A predefined JSON-based configuration file</li>
+	<li>Support for a predefined JSON-based configuration file</li>
 	<li>A typical application structure</li>
-	<li>A set of application controllers that the application can leverage including layout and transition controllers</li>
-	<li>A notion of views, with view templates, and view controllers in addition to application controllers</li>
+	<li>A set of application controllers that the application can leverage or extend, including layout and transition controllers</li>
+	<li>A notion of views, with view templates, and view controllers in addition to the application controllers</li>
 	<li>A build system to bundle your application with a limited set of files to be downloaded or installed onto the system</li>
+</ul>
+<p>The documentation for dojox/app can be found here:</p>
+<ul>
+	<li><a href="http://dojotoolkit.org/reference-guide/1.9/dojox/app.html" target="_blank">Dojo Reference Guide section for dojox/app</a></li>
+	<li><a href="http://dojotoolkit.org/api/" target="_blank">Dojo API Guide</a></li>
+	<li><a href="http://download.dojotoolkit.org/release-1.9.0b1/dojo-release-1.9.0b1/dojox/app/tests/" target="_blank">Run the dojox/app tests here</a></li>
+	<li><a href="https://github.com/dmachi/dojox_application/tree/dojo19/tests" target="_blank">View the dojox/app tests source here</a></li>
 </ul>
 
 <p>Even though dojox/app is built on top of Dojo, it is UI Toolkit agnostic.  The application views can be developed with:</p>
