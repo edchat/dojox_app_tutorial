@@ -103,7 +103,7 @@
 </pre>
 
 
-<h3 id="updateindexcordova">For Cordova/PhoneGap you will need to setup an index.html file, and build the app for Cordova/PhoneGap.</h3>
+<h3 id="updateindexcordova">For Cordova/PhoneGap you will need to setup an index.html file, and build the application for Cordova/PhoneGap.</h3>
 <p>This index.html file was setup to work with <strong>Cordova/PhoneGap</strong>.</p>
 <pre class="brush: js; html-script: true; highlight: [9,10,11,12,15]">
 	&lt;!DOCTYPE html&gt;
@@ -128,7 +128,7 @@
 	&lt;/html&gt;
 </pre>
 
-<p>We can not run in Cordova/PhoneGap as part of this demo, you will need to install Cordova/PhoneGap and build the app to run on Cordova/PhoneGap.
+<p>We can not run in Cordova/PhoneGap as part of this demo, you will need to install Cordova/PhoneGap and build the application to run on Cordova/PhoneGap.
 	See the Getting Started Guides at the <a href="http://docs.phonegap.com/" target="_blank">The Cordova/PhoneGap Documentation</a> for more details.
 </p>
 
@@ -157,9 +157,9 @@
 	/myApps/
 		/contactsApp/
 			contacts.css
+			contacts.html
 			contacts.js
 			contacts.json
-			contacts.php
 			contacts.profile.js
 			package.json
 			/build/
@@ -176,7 +176,7 @@
 <p>First take a look at the <strong>Dojo build system profile</strong> for the Contacts
 	Application <strong>(build.profile.js)</strong>.  The profile will contain the key information of your build and
 	import the dojox/app extensions into the build process as shown below:
-<pre class="brush: js; html-script: true; highlight: [1,8,23,27,28,33]">
+<pre class="brush: js; html-script: true; highlight: [1,8,19,27,31,32]">
 	require(["dojox/app/build/buildControlApp"], function(){
 	});
 
@@ -186,7 +186,6 @@
 		// relative to base path
 		releaseDir: "./contactsApp-release",
 		action: "release",
-		//multipleAppConfigLayers: true,
 		cssOptimize: "comments",
 		mini: true,
 		packages:[{
@@ -196,22 +195,20 @@
 			name: "dijit",
 			location: "./dijit"
 		},{
-			name: "dojox",
-			location: "./dojox"
-		},{
 			name: "contactsApp",
 			location: "./contactsApp"
+		},{
+			name: "dojox",
+			location: "./dojox"
 		}],
 		selectorEngine: "acme",
 		layers: {
-			"contactsApp/contacts": {
-				include: [
-					"contactsApp/contacts"
-				]
-			},
 			"dojo/dojo": {
 				boot: true,
 				customBase: true
+			},
+			"contactsApp/contacts": {
+				include: ["contactsApp/contacts"]
 			}
 		}
 	};
@@ -244,11 +241,11 @@ error(303) Missing include module for layer. missing: contactsApp/views/details.
 	this trac ticket: <a href="https://bugs.dojotoolkit.org/ticket/17144" target="_blank">https://bugs.dojotoolkit.org/ticket/17144</a>
 </p>
 
-<p>If you watch the network tab in the debugger while run the built version of the app from <strong>/myApps/contactsApp-release/</strong>
-	you can see that only a few script files are loaded are loaded.</p>
+<p>Watch the network tab in the debugger while running the built version of the application from <strong>/myApps/contactsApp-release/</strong>
+	and you can see that only a few script files are loaded are loaded.</p>
 <ul>
 	<li><strong>deviceTheme.js</strong> is loaded from contacts.html</li>
-	<li><strong>dojo.js is</strong> loaded from contacts.html</li>
+	<li><strong>dojo.js</strong> is loaded from contacts.html</li>
 	<li><strong>contacts.js</strong> is loaded from dojo.js</li>
 	<li><strong>contacts_en-us.js</strong> is loaded from dojo.js</li>
 	<li><strong>memory.js</strong> is loaded because it was not included in the layer because the dependency in the config was inside a <strong>has</strong> section</li>
@@ -256,7 +253,8 @@ error(303) Missing include module for layer. missing: contactsApp/views/details.
 	<li><strong>SimpleQueryEngine.js</strong> is loaded because memory.js requires it.</li>
 	<li><strong>History.js</strong> is loaded because it was not included in the layer because the dependency in the config was inside a <strong>has</strong> section</li>
 </ul>
-<p>So if we update the build profile to include <strong>memory.js</strong> and <strong>History.js</strong>, we can avoid having some of these scripts load separately.</p>
+<p>Update the build profile to include <strong>memory.js</strong> and <strong>History.js</strong>, to include these scripts and
+	the ones they require in the build layer.</p>
 <pre class="brush: js; html-script: true; highlight: [1,5,6]">
 		layers: {
 			"contactsApp/contacts": {
@@ -269,8 +267,8 @@ error(303) Missing include module for layer. missing: contactsApp/views/details.
 		}
 	};
 </pre>
-<p>If you rebuild the Contacts App and watch the network tab in the debugger while run the built version of the app from
-	<strong>/myApps/contactsApp-release/</strong> you will see that now only these script files are loaded are loaded.
+<p>After a rebuild check the network tab in the debugger while running the built version again and you will see that
+	the ones included in the layer are no longer loaded, now only these script files are loaded.
 </p>
 <ul>
 	<li><strong>deviceTheme.js</strong> is loaded from contacts.html</li>
@@ -279,34 +277,35 @@ error(303) Missing include module for layer. missing: contactsApp/views/details.
 	<li><strong>contacts_en-us.js</strong> is loaded from dojo.js</li>
 </ul>
 
-<p>Alternatively, you can build a layer per-view instead of a single layer for the entire application by
-	having the <strong>multipleAppConfigLayers</strong> property set to true in your profile.
-	This is useful since dojox/app will only load a view when it is being transitioned to for the first time.
-	So if you have a lot of views that won't get navigated to in a typical usage of your application and
-	you do not want to load everything upfront, you can set <strong>multipleAppConfigLayers: true</strong>.
-	In this case the controller file of each view will be used as the layer for the view.</p>
+<p>Alternatively, you can build a layer per-view, instead of a single layer for the entire application. Set
+	the <strong>multipleAppConfigLayers</strong> property to true in your profile to build a layer for each view.
+	This can be useful since dojox/app will only load a view when it is being transitioned to for the first time.
+	So if an application has a lot of views that will not be navigated to in a typical usage of the application, and
+	you do not want to load everything upfront, you can set <strong>multipleAppConfigLayers: true</strong> in your
+	build profile. In this case the controller file of each view will be used as the layer for the view.</p>
 
-<p>If you modify the build profile above by removing the "//" from the <strong>//multipleAppConfigLayers: true,</strong> line and then
-	rebuild the application, you can look for <strong>Layer Contents:</strong> in the <strong>build-report.txt</strong>.  You
-will see layers for:</p>
+<p>Modify the build profile above by adding a line with <strong>multipleAppConfigLayers: true,</strong> and then
+	rebuild the application.  Look for <strong>Layer Contents:</strong> in the <strong>build-report.txt</strong> to see
+	which layers have been created, you should see these layers:</p>
 <ul>
 	<li>contactsApp/contacts:</li>
 	<li>dojo/dojo:</li>
 	<li>contactsApp/views/list:</li>
 	<li>contactsApp/views/details:</li>
 </ul>
-<p>If you size your browser window to be the size of a phone, and watch the network tab in the debugger while you run this
-	built version of the app from <strong>/myApps/contactsApp-release/</strong>, you can see that the <strong>details.js</strong>
-	is not loaded until you select a contact and transition to the details view.</p>
+<p>Size your browser window to be the size of a phone, so that the list and details view will not be shown in two columns.
+	Watch the network tab in the debugger while you run this built version of the application, notice that
+	<strong>details.js</strong> is not loaded until you select a contact and transition to the details view.</p>
 
 
 <p>By default the dojox/app build extension will use the first layer it finds while processing the profile to bundle all
-	of the modules for the application.  You can specify an alternate layer to create by
-	passing <strong>--appConfigLayer layer/name</strong> on the command line for example: .</p>
+	of the modules for the application.  You can specify a specific layer to use by
+	passing <strong>--appConfigLayer layer/name</strong> on the command line.  It can be a layer listed in the
+	profile or one not listed in the profile for example: .</p>
 <pre class="brush: js; html-script: true;">
 	./build.sh --profile {path-to-myApps}/contactsApp/build/build.profile.js
 		--appConfigFile {path-to-myApps}/contactsApp/contacts.json
-		--appConfigLayer contactsApp/anotherLayer
+		--appConfigLayer contactsApp/contacts
 </pre>
 
 <h3 id="createAppTips">Tips for creating an Application using dojox/app</h3>
@@ -329,8 +328,9 @@ will see layers for:</p>
 
 <h3>Conclusion</h3>
 
-<p>In this tutorial we learned how to build the Contacts Application using the Dojo build extensions in dojox/app, and we
-	learned how to setup the Contacts Application to work with Cordova/PhoneGap.</p>
+<p>In this tutorial we learned how to update the Contacts Application to use Cordova/PhoneGap based access the native
+	contacts on a mobile device, and how to use the dojox/app "Build" support.
+</p>
 
 
 <?php include("../series.inc"); ?>
