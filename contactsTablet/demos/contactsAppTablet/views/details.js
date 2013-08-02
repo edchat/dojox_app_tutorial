@@ -136,7 +136,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
 					// field
 					array.forEach(contact.phoneNumbers,
 						function(number){
-						// TODO for now we just skip non supported
+						// for now we just skip non supported
 						// fields, ideally we should have a generic
 						// mechanism to deal with them
 						var phonekey = "phone"+number.type;
@@ -147,7 +147,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
 					// set each mail field to the corresponding form
 					// field
 					array.forEach(contact.emails, function(mail){
-						// TODO for now we just skip non supported
+						// for now we just skip non supported
 						// fields, ideally we should have a generic
 						// mechanism to deal with them
 						var mailkey = "mail"+mail.type;
@@ -241,7 +241,6 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/has", "dojo/when",
 					getStoreField(contact[keys[0]],
 						keys[1]).value = value;
 				}
-				// TODO remove existing value?
 			}
 		},
 		_hideEmptyFields: function(view){
