@@ -15,7 +15,7 @@
 <div style="float: left; width: 100%; margin-top: 20px; margin-bottom: 20px">
 	<div style="float: left; width: 96%;">
 		<label style="margin-left: 70px;">Contacts Application on a tablet in "Edit" Mode</label>
-		<img src="images/tabletUpdate.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
+		<img src="images/tabletupdate.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
 	</div>
 </div>
 
