@@ -19,7 +19,7 @@
 	</div>
 	<div style="float: left; width: 50%;">
 		<label style="margin-left: 70px;">Contacts Details "Edit" Mode</label>
-		<img src="images/phoneUpdate.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
+		<img src="images/phoneupdate.png" alt="Phone Contacts Details View" style="margin:0 auto;display:block;" />
 	</div>
 </div>
 
